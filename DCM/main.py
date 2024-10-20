@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QMainWindow, QLineEdi
 from PyQt5.QtWidgets import QFormLayout, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
+from login_registration import handle_login
 import sys
 
 
@@ -10,31 +11,55 @@ class DCM(QMainWindow):
         super().__init__()
         self.logo = QPixmap("logo.png")
         self.setWindowTitle('DCM')
-        # self.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.setStyleSheet("background-color: rgb(205, 205, 255);")
+        self.page = 0
         self.run_gui()
 
     def run_gui(self):
         container = QWidget()
-        container.setLayout(self.welcome_screen())
+        if self.page == 0:
+            container.setLayout(self.login_page())
+        elif self.page == 1:
+            container.setLayout(self.register_page())
         self.setCentralWidget(container)
 
-    def welcome_screen(self):
+    def login_page(self):
         welcome_layout = QHBoxLayout()
 
-        #login page side
+        # login page side
+        # title
         leftside = QVBoxLayout()
+        title = QLabel("Login")
+        title.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
+        title.setAlignment(Qt.AlignCenter)
 
+        # form
         login_layout = QFormLayout()
         button1 = QLabel("User Name")
-        lineEdit1 = QLineEdit()
+        button1.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
+        self.username = QLineEdit()
+        self.username.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
         button2 = QLabel("Password")
-        lineEdit2 = QLineEdit()
-        login_layout.addRow(button1, lineEdit1)
-        login_layout.addRow(button2, lineEdit2)
+        button2.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
+        self.password = QLineEdit()
+        self.password.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
+        self.password.setEchoMode(QLineEdit.Password)
 
-        leftside.addStretch()
+        login_layout.addRow(button1, self.username)
+        login_layout.addRow(button2, self.password)
+
+        login_button = QPushButton("Login")
+        login_button.clicked.connect(lambda: handle_login(self))
+
+        leftside.addStretch() #top
+        leftside.addWidget(title)
         leftside.addLayout(login_layout)
-        leftside.addStretch()
+        leftside.addWidget(login_button)
+        leftside.addStretch() #bottom
+
+
+        login_side = QWidget()
+        login_side.setLayout(leftside)
 
         #
         rightside = QVBoxLayout()
@@ -45,20 +70,12 @@ class DCM(QMainWindow):
         rightside.addWidget(logolable, alignment=Qt.AlignCenter)
         rightside.addStretch()
 
-        welcome_layout.addLayout(leftside, 1)
+        welcome_layout.addWidget(login_side, 1, alignment=Qt.AlignHCenter)
         welcome_layout.addLayout(rightside, 1)
-        # textbox = QLineEdit(self)
-        # welcome_layout.addWidget(textbox)
-        # self.textbox1 = QLineEdit(self)
-        # self.textbox1.resize(300, 40)
-        # welcome_layout.addWidget(self.textbox1)
-        # welcome_layout.addWidget(QPushButton("Left-Most"))
-        # welcome_layout.addWidget(QPushButton("Center"), 1)
-        # welcome_layout.addWidget(QPushButton("Right-Most"), 2)
         return welcome_layout
-        # container = QWidget()
-        # container.setLayout(welcome_layout)
-        # self.setCentralWidget(container)
+
+    def register_page(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
