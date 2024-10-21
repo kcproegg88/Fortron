@@ -10,4 +10,3 @@ def handle_login(dcm):
         dcm.login_warning.setText("In correct Username/Password")
         dcm.page = 0
 
-    dcm.page = 0
