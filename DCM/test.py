@@ -6,6 +6,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import sys
 import os
+from  parameter_display import PaceMakerMode
 
 class DCM(QMainWindow):  # Main window class for DCM application
     def __init__(self):
@@ -18,6 +19,11 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.max_users = 10  # Maximum 10 users
         self.ensure_users_file_exists()  # Ensure the users file exists
         self.run_gui()  # Run GUI setup
+        AOO = PaceMakerMode("AOO", ["Hi", "hello", "wsg"])
+        VOO = PaceMakerMode("VOO", ["Hi", "hello", "wsg"])
+        AAI = PaceMakerMode("AAI", ["Hi", "hello", "wsg"])
+        VVI = PaceMakerMode("VVI", ["Hi", "hello", "wsg"])
+        self.mode = {"A00": AOO, "VOO": VOO, "AAI": AAI, "VVI": VVI}
 
     def ensure_users_file_exists(self):
         """Ensure that the users file exists. If not, create it."""
@@ -27,6 +33,7 @@ class DCM(QMainWindow):  # Main window class for DCM application
 
     def run_gui(self):
         container = QWidget()  # Create main container widget
+        print(self.page)
         if self.page == 0:
             container.setLayout(self.login_page())  # Change to login layout
         elif self.page == 1:
@@ -247,8 +254,11 @@ class DCM(QMainWindow):  # Main window class for DCM application
         params_label = QLabel("Programmable Parameters:")  # Label for parameters
         params_label.setStyleSheet("font-weight: bold;")
 
-        # Parameters (placeholders for now)
-        params_text = QLabel("Display and modify parameters here.")  # Placeholder text
+        self.params_widget = QWidget()  # Label for parameters
+        params_layout = QHBoxLayout()
+        params_layout.addWidget(self.mode["AOO"])
+        self.params_widget.setLayout(params_layout)
+
 
         # Communication status
         comm_status_label = QLabel("Communication Status:")  # Label for communication status
@@ -267,13 +277,28 @@ class DCM(QMainWindow):  # Main window class for DCM application
         main_layout.addWidget(mode_label)  # Add pacing mode label
         main_layout.addWidget(self.mode_combo)  # Add pacing mode
         main_layout.addWidget(params_label)  # Add parameters label
-        main_layout.addWidget(params_text)  # Add parameters placeholder
+        main_layout.addLayout(self.params_widget)  # Add parameters label
         main_layout.addWidget(comm_status_label)  # Add communication status label
         main_layout.addWidget(self.comm_status)  # Add communication status
         main_layout.addWidget(device_status_label)  # Add device status label
         main_layout.addWidget(self.device_status)  # Add device status placeholder
 
+        self.mode_combo.currentTextChanged.connect(self.update_parameters)
+
         return main_layout  # Return complete layout
+
+    def update_parameters(self):
+        selected_mode = self.mode_combo.currentText()
+        mode_widget = self.mode.get(selected_mode)
+        layout = QHBoxLayout()
+        layout.addWidget(mode_widget)
+
+        # Clear previous layout if any
+        for i in reversed(range(self.params_widget.layout().count())):
+            self.params_widget.layout().itemAt(i).widget().setParent(None)
+
+        self.params_widget.setLayout(layout)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)  # Create application
