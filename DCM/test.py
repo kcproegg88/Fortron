@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QApplication, QLabel, QWidget, QMainWindow, QLineEdit, QPushButton,
-    QFormLayout, QHBoxLayout, QVBoxLayout, QMessageBox, QComboBox
+    QFormLayout, QHBoxLayout, QVBoxLayout, QMessageBox, QComboBox, QStackedWidget
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -18,18 +18,86 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.users_file = "users.txt"  # File to store user data
         self.max_users = 10  # Maximum 10 users
         self.ensure_users_file_exists()  # Ensure the users file exists
+        self.mode = {}
+
+        self.params_stacked_widget = QStackedWidget()
+
+        modes = ["AOO", "VOO", "AAI", "VVI"]
+
+        # AOO Mode Parameters
+        mode_widget = PaceMakerMode("AOO", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Atrial pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["AOO"] = mode_widget
+
+        # VOO Mode Parameters
+        mode_widget = PaceMakerMode("VOO", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Ventricular pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["VOO"] = mode_widget
+
+        # AAI Mode Parameters
+        mode_widget = PaceMakerMode("AAI", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Atrial pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+            ["Atrial sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+            ["ARP", 150, 500, 1],  # (150-500 ms)
+            ["PVARP", 150, 500, 1]  # (150-500 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["AAI"] = mode_widget
+
+        # VVI Mode Parameters
+        mode_widget = PaceMakerMode("VVI", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Ventricular pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+            ["Ventricular sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+            ["VRP", 150, 500, 1],  # (150-500 ms)
+            ["Hysteresis interval", 200, 500, 1],  # (200-500 ms)
+            ["Low rate interval", 343, 2000, 1]  # (343-2000 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["VVI"] = mode_widget
+        # modes = ["AOO", "VOO", "AAI", "VVI"]
+        # mode_widget = PaceMakerMode("AOO", [["Lower rate limit", 30, 175], ["Upper rate limit", 50, 175], ["Atrial amplitude", 5, 7], ["Atrial pulse width", 5, 9]])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["AOO"] = mode_widget
+        # mode_widget = PaceMakerMode("VOO", [["Lower rate limit", 30, 175], ["Upper rate limit", 50, 175], ["Ventricular amplitude", 5, 7], ["Ventricular pulse width", 5, 1]])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["VOO"] = mode_widget
+        # mode_widget = PaceMakerMode("AAI", ["Lower rate limit", "Upper rate limit", "Atrial Amplitude", "Atrial pulse width", "Atrial Sensitivity", ])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["AAI"] = mode_widget
+        # mode_widget = PaceMakerMode("VVI", ["Hi", "hello", "wsg"])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["VVI"] = mode_widget
+
+        # for mode_name in modes:
+        #     mode_widget = PaceMakerMode(mode_name, ["Hi", "hello", "wsg"])
+        #
+        #     self.params_stacked_widget.addWidget(mode_widget)
+        #
+        #     self.mode[mode_name] = mode_widget
         self.run_gui()  # Run GUI setup
-        AOO = PaceMakerMode("AOO", ["Hi", "hello", "wsg"])
-        VOO = PaceMakerMode("VOO", ["Hi", "hello", "wsg"])
-        AAI = PaceMakerMode("AAI", ["Hi", "hello", "wsg"])
-        VVI = PaceMakerMode("VVI", ["Hi", "hello", "wsg"])
-        self.mode = {"A00": AOO, "VOO": VOO, "AAI": AAI, "VVI": VVI}
+
 
     def ensure_users_file_exists(self):
-        """Ensure that the users file exists. If not, create it."""
-        if not os.path.exists(self.users_file):
-            with open(self.users_file, 'w') as f:
-                pass  # Create an empty file
+            """Ensure that the users file exists. If not, create it."""
+            if not os.path.exists(self.users_file):
+                with open(self.users_file, 'w') as f:
+                    pass  # Create an empty file
 
     def run_gui(self):
         container = QWidget()  # Create main container widget
@@ -237,6 +305,10 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.page = 0  # Set page to login
         self.run_gui()  # Refresh GUI
 
+    def sign_out(self):
+        self.page = 0
+        self.run_gui()
+
     def main_page(self):
         main_layout = QVBoxLayout()  # Main layout
 
@@ -253,35 +325,47 @@ class DCM(QMainWindow):  # Main window class for DCM application
         # Programmable parameters display
         params_label = QLabel("Programmable Parameters:")  # Label for parameters
         params_label.setStyleSheet("font-weight: bold;")
-
         self.params_widget = QWidget()  # Label for parameters
         params_layout = QHBoxLayout()
-        params_layout.addWidget(self.mode["AOO"])
+        params_layout.addWidget(self.params_stacked_widget)
         self.params_widget.setLayout(params_layout)
+        print("Working")
 
+        #bottom bar
+        bottom_bar = QHBoxLayout()
 
         # Communication status
+        comm_status_box = QVBoxLayout()
         comm_status_label = QLabel("Communication Status:")  # Label for communication status
         comm_status_label.setStyleSheet("font-weight: bold;")  # Bold text
         self.comm_status = QLabel("Not Connected")  # Placeholder status
         self.comm_status.setStyleSheet("color: red;")  # Red
+        comm_status_box.addWidget(comm_status_label)  # Add communication status label
+        comm_status_box.addWidget(self.comm_status)  # Add communication status
+        bottom_bar.addLayout(comm_status_box)
 
         # Device identification status
+        device_status_box = QVBoxLayout()
         device_status_label = QLabel("Device Status:")  # Label for device status
         device_status_label.setStyleSheet("font-weight: bold;")  # Bold text
         self.device_status = QLabel("No Device Detected")  # Placeholder status
         self.device_status.setStyleSheet("color: red;")  # Red
+        device_status_box.addWidget(device_status_label)  # Add device status label
+        device_status_box.addWidget(self.device_status)  # Add device status placeholder
+        bottom_bar.addLayout(device_status_box)
+
+        # Sign Out Button
+        sign_out_button = QPushButton("Sign Out")
+        sign_out_button.clicked.connect(self.sign_out)
+        bottom_bar.addWidget(sign_out_button)
 
         # Assemble main layout
         main_layout.addWidget(title)  # Title
         main_layout.addWidget(mode_label)  # Add pacing mode label
         main_layout.addWidget(self.mode_combo)  # Add pacing mode
         main_layout.addWidget(params_label)  # Add parameters label
-        main_layout.addLayout(self.params_widget)  # Add parameters label
-        main_layout.addWidget(comm_status_label)  # Add communication status label
-        main_layout.addWidget(self.comm_status)  # Add communication status
-        main_layout.addWidget(device_status_label)  # Add device status label
-        main_layout.addWidget(self.device_status)  # Add device status placeholder
+        main_layout.addWidget(self.params_widget)  # Add parameters label
+        main_layout.addLayout(bottom_bar)
 
         self.mode_combo.currentTextChanged.connect(self.update_parameters)
 
@@ -289,15 +373,11 @@ class DCM(QMainWindow):  # Main window class for DCM application
 
     def update_parameters(self):
         selected_mode = self.mode_combo.currentText()
-        mode_widget = self.mode.get(selected_mode)
-        layout = QHBoxLayout()
-        layout.addWidget(mode_widget)
+        # Find the index of the selected mode in the combo box
+        index = self.mode_combo.findText(selected_mode)
 
-        # Clear previous layout if any
-        for i in reversed(range(self.params_widget.layout().count())):
-            self.params_widget.layout().itemAt(i).widget().setParent(None)
-
-        self.params_widget.setLayout(layout)
+        if index != -1:
+            self.params_stacked_widget.setCurrentIndex(index)
 
 
 if __name__ == '__main__':
