@@ -1,2 +1,6 @@
 hello:hello
-h:h
+h:h:[AOO:1,2,3,44,5]
+k:k
+kr:kr
+ha:ha
+67:67

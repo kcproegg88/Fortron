@@ -18,6 +18,7 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.users_file = "users.txt"  # File to store user data
         self.max_users = 10  # Maximum 10 users
         self.ensure_users_file_exists()  # Ensure the users file exists
+        self.key = "1234"
         self.mode = {}
 
         self.params_stacked_widget = QStackedWidget()
@@ -210,10 +211,17 @@ class DCM(QMainWindow):  # Main window class for DCM application
         label_password.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Label
         self.reg_password_input = QLineEdit()  # Input for password
         self.reg_password_input.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Input
-        self.reg_password_input.setEchoMode(QLineEdit.Password)  # Hide password
+        self.reg_password_input.setEchoMode(QLineEdit.Password)  # Hide
+        label_key = QLabel("Key")  # Password label
+        label_key.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Label
+        self.reg_key_input = QLineEdit()  # Input for password
+        self.reg_key_input.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Input
+        self.reg_key_input.setEchoMode(QLineEdit.Password)  # Hide
+
 
         register_form.addRow(label_username, self.reg_username_input)  # Add username row to form
         register_form.addRow(label_password, self.reg_password_input)  # Add password row to form
+        register_form.addRow(label_key, self.reg_key_input)  # Add password row to form
 
         # Register and Back buttons
         register_button = QPushButton("Register")  # Register button
@@ -273,6 +281,10 @@ class DCM(QMainWindow):  # Main window class for DCM application
     def handle_register(self):
         username = self.reg_username_input.text().strip()  # Get username
         password = self.reg_password_input.text().strip()  # Get password
+        key = self.reg_key_input.text().strip() # get Key
+        if key != self.key:
+            self.register_warning.setText("Incorrect Key")
+            return
 
         if not username or not password:
             self.register_warning.setText("Please enter both username and password.")
