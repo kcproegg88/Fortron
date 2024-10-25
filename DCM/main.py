@@ -1,83 +1,68 @@
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QMainWindow, QLineEdit, QPushButton
-from PyQt5.QtWidgets import QFormLayout, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLineEdit, QPushButton, QLabel
+from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QStackedWidget, QComboBox, QFormLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from login_registration import handle_login
 import sys
+import os
+from parameter_display import PaceMakerMode
+from login_registration import LoginPage, RegisterPage
+from mainpage import MainPage
 
 
-class DCM(QMainWindow):
+class DCM(QMainWindow):  # Main Window Class For DCM Application
     def __init__(self):
         super().__init__()
         self.logo = QPixmap("logo.png")
-        self.setWindowTitle('DCM')
+        self.user_file = "users.txt"
+        self.read_users()
+        self.setWindowTitle("DCM")
         self.setStyleSheet("background-color: rgb(205, 205, 255);")
+        self.page = 0  # Page Number
+        self.pages = [0]*3
+        self.max_users = 10
+        self.key = "1234"
+        self.mode = {}
+        self.user = ""
+        self.run_gui()
+
+    def read_users(self):
+        self.users = {}
+        self.data = {}
+        with open(self.user_file, 'r') as f:
+            for line in f:
+                if ':' in line:
+                    username, password, saved_data = line.strip().split(':', 2)
+                    self.users[username] = password
+                    self.data[username] = map(int, saved_data.split())
+
+    def write_user(self, username, password, data):
+        with open(self.user_file, 'a') as f:
+            f.write(f"{username}:{password}:{" ".join(data)}\n")
+        self.read_users()
+
+    def save_parameters(self):
+        print("works")
+        try:
+            data = " ".join([" ".join(str(self.mode[i].send_values())) for i in ["AOO", "VOO", "AAI", "VVI"]])
+            print(data)
+            self.write_user(self.user, self.users[self.user], data)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    def sign_out(self):
         self.page = 0
         self.run_gui()
 
     def run_gui(self):
-        container = QWidget()
-        if self.page == 0:
-            container.setLayout(self.login_page())
-        elif self.page == 1:
-            container.setLayout(self.register_page())
-        self.setCentralWidget(container)
-
-    def login_page(self):
-        welcome_layout = QHBoxLayout()
-
-        # login page side
-        # title
-        leftside = QVBoxLayout()
-        title = QLabel("Login")
-        title.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
-        title.setAlignment(Qt.AlignCenter)
-
-        # form
-        login_layout = QFormLayout()
-        button1 = QLabel("User Name")
-        button1.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
-        self.username = QLineEdit()
-        self.username.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
-        button2 = QLabel("Password")
-        button2.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
-        self.password = QLineEdit()
-        self.password.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
-        self.password.setEchoMode(QLineEdit.Password)
-
-        login_layout.addRow(button1, self.username)
-        login_layout.addRow(button2, self.password)
-
-        login_button = QPushButton("Login")
-        login_button.clicked.connect(lambda: handle_login(self))
-
-        leftside.addStretch() #top
-        leftside.addWidget(title)
-        leftside.addLayout(login_layout)
-        leftside.addWidget(login_button)
-        leftside.addStretch() #bottom
+        self.pages[0] = LoginPage(self)
+        self.pages[1] = RegisterPage(self)
+        self.pages[2] = MainPage(self)
+        main_container = QWidget()
+        main_container.setLayout(self.pages[self.page].layout)
+        self.setCentralWidget(main_container)
 
 
-        login_side = QWidget()
-        login_side.setLayout(leftside)
-
-        #
-        rightside = QVBoxLayout()
-        logolable = QLabel()
-        logolable.setPixmap(self.logo)
-
-        rightside.addStretch()
-        rightside.addWidget(logolable, alignment=Qt.AlignCenter)
-        rightside.addStretch()
-
-        welcome_layout.addWidget(login_side, 1, alignment=Qt.AlignHCenter)
-        welcome_layout.addLayout(rightside, 1)
-        return welcome_layout
-
-    def register_page(self):
-        pass
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     dcm = DCM()
     dcm.showFullScreen()

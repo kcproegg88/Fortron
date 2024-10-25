@@ -7,7 +7,6 @@ from PyQt5.QtGui import QIntValidator, QPixmap
 class PaceMakerParameter(QWidget):
     def __init__(self, param_list):
         super().__init__()
-        print(param_list)
         self.name = param_list[0]
         self.value = (param_list[2]-param_list[1])//2 + param_list[1]
         self.decimal = param_list[3]
@@ -31,14 +30,13 @@ class PaceMakerParameter(QWidget):
 
 
 class PaceMakerMode(QWidget):
-    def __init__(self, mode_name, parameters):
+    def __init__(self, mode_name, dcm, parameters):
         super().__init__()
-
+        self.dcm = dcm
         self.mode_name = QLabel(mode_name)
         self.mode_name.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
 
         self.parameters = [PaceMakerParameter(param_list) for param_list in parameters]
-        print("here")
         self.layout = QGridLayout()
         self.layout.addWidget(self.mode_name, 0, 0, 1, 4)
         self.setLayout(self.layout)
@@ -52,7 +50,7 @@ class PaceMakerMode(QWidget):
         self.layout.addWidget(QLabel("Hello"), 1,1, len(self.parameters),1)
 
         self.save_button = QPushButton("Save")
-        self.save_button.clicked.connect(self.save_values)
+        self.save_button.clicked.connect(self.dcm.save_parameters)
         self.load_data_button = QPushButton("Load Egram Data")
         self.send_data_button = QPushButton("Send to Pacemaker")
         self.layout.addWidget(self.save_button, len(self.parameters)+2, 0)
@@ -62,5 +60,6 @@ class PaceMakerMode(QWidget):
         logo_label.setPixmap(QPixmap("grid.png"))
         self.layout.addWidget(logo_label, 1, 1, len(self.parameters), 2)
 
-    def save_values(self):
-        print(*[i.value for i in self.parameters], sep=" ")
+    def send_values(self):
+        return [parameter.value for parameter in self.parameters]
+        # print(*[i.value for i in self.parameters], sep=" ")
