@@ -1,6 +1,7 @@
 hello:hello
-h:h:[AOO:1,2,3,44,5]
+h:h
 k:k
 kr:kr
 ha:ha
 67:67
+omar:omar

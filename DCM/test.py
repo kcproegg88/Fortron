@@ -21,56 +21,56 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.key = "1234"
         self.mode = {}
 
-        self.params_stacked_widget = QStackedWidget()
-
-        modes = ["AOO", "VOO", "AAI", "VVI"]
-
-        # AOO Mode Parameters
-        mode_widget = PaceMakerMode("AOO", [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Atrial pulse width", 5, 190, 100]  # (0.05-1.9 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.mode["AOO"] = mode_widget
-
-        # VOO Mode Parameters
-        mode_widget = PaceMakerMode("VOO", [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Ventricular pulse width", 5, 190, 100]  # (0.05-1.9 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.mode["VOO"] = mode_widget
-
-        # AAI Mode Parameters
-        mode_widget = PaceMakerMode("AAI", [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Atrial pulse width", 5, 190, 100],  # (0.05-1.9 ms)
-            ["Atrial sensitivity", 25, 1000, 100],  # (0.25-10 mV)
-            ["ARP", 150, 500, 1],  # (150-500 ms)
-            ["PVARP", 150, 500, 1]  # (150-500 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.mode["AAI"] = mode_widget
-
-        # VVI Mode Parameters
-        mode_widget = PaceMakerMode("VVI", [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Ventricular pulse width", 5, 190, 100],  # (0.05-1.9 ms)
-            ["Ventricular sensitivity", 25, 1000, 100],  # (0.25-10 mV)
-            ["VRP", 150, 500, 1],  # (150-500 ms)
-            ["Hysteresis interval", 200, 500, 1],  # (200-500 ms)
-            ["Low rate interval", 343, 2000, 1]  # (343-2000 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.mode["VVI"] = mode_widget
+        # self.params_stacked_widget = QStackedWidget()
+        #
+        # modes = ["AOO", "VOO", "AAI", "VVI"]
+        #
+        # # AOO Mode Parameters
+        # mode_widget = PaceMakerMode("AOO", [
+        #     ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+        #     ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+        #     ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+        #     ["Atrial pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        # ])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["AOO"] = mode_widget
+        #
+        # # VOO Mode Parameters
+        # mode_widget = PaceMakerMode("VOO", [
+        #     ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+        #     ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+        #     ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+        #     ["Ventricular pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        # ])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["VOO"] = mode_widget
+        #
+        # # AAI Mode Parameters
+        # mode_widget = PaceMakerMode("AAI", [
+        #     ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+        #     ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+        #     ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+        #     ["Atrial pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+        #     ["Atrial sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+        #     ["ARP", 150, 500, 1],  # (150-500 ms)
+        #     ["PVARP", 150, 500, 1]  # (150-500 ms)
+        # ])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["AAI"] = mode_widget
+        #
+        # # VVI Mode Parameters
+        # mode_widget = PaceMakerMode("VVI", [
+        #     ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+        #     ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+        #     ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+        #     ["Ventricular pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+        #     ["Ventricular sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+        #     ["VRP", 150, 500, 1],  # (150-500 ms)
+        #     ["Hysteresis interval", 200, 500, 1],  # (200-500 ms)
+        #     ["Low rate interval", 343, 2000, 1]  # (343-2000 ms)
+        # ])
+        # self.params_stacked_widget.addWidget(mode_widget)
+        # self.mode["VVI"] = mode_widget
         # modes = ["AOO", "VOO", "AAI", "VVI"]
         # mode_widget = PaceMakerMode("AOO", [["Lower rate limit", 30, 175], ["Upper rate limit", 50, 175], ["Atrial amplitude", 5, 7], ["Atrial pulse width", 5, 9]])
         # self.params_stacked_widget.addWidget(mode_widget)
@@ -133,6 +133,8 @@ class DCM(QMainWindow):  # Main window class for DCM application
 
     def login_page(self):
         welcome_layout = QHBoxLayout()  # Main layout
+        self.username_input = QLineEdit()  # Input for username
+        self.password_input = QLineEdit()  # Input for password
 
         # Left side (Login form)
         leftside = QVBoxLayout()  # Vertical layout for login form
@@ -144,11 +146,11 @@ class DCM(QMainWindow):  # Main window class for DCM application
         login_layout = QFormLayout()  # Form layout for inputs
         label_username = QLabel("User Name")  # Username label
         label_username.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Label
-        self.username_input = QLineEdit()  # Input for username
+
         self.username_input.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Input
         label_password = QLabel("Password")  # Password label
         label_password.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Label
-        self.password_input = QLineEdit()  # Input for password
+
         self.password_input.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")  # Input
         self.password_input.setEchoMode(QLineEdit.Password)  # Hide password
 
@@ -270,6 +272,8 @@ class DCM(QMainWindow):  # Main window class for DCM application
 
         # Read users from file
         users = self.read_users()
+        self.username_input.clear()  # Clear the input fields
+        self.password_input.clear()
 
         # Check if username and password are correct
         if username in users and users[username] == password:
@@ -318,10 +322,59 @@ class DCM(QMainWindow):  # Main window class for DCM application
         self.run_gui()  # Refresh GUI
 
     def sign_out(self):
-        self.page = 0
-        self.run_gui()
+        self.show_login_page()
 
     def main_page(self):
+        self.params_stacked_widget = QStackedWidget()
+
+        modes = ["AOO", "VOO", "AAI", "VVI"]
+
+        # AOO Mode Parameters
+        mode_widget = PaceMakerMode("AOO", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Atrial pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["AOO"] = mode_widget
+
+        # VOO Mode Parameters
+        mode_widget = PaceMakerMode("VOO", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Ventricular pulse width", 5, 190, 100]  # (0.05-1.9 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["VOO"] = mode_widget
+
+        # AAI Mode Parameters
+        mode_widget = PaceMakerMode("AAI", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Atrial pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+            ["Atrial sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+            ["ARP", 150, 500, 1],  # (150-500 ms)
+            ["PVARP", 150, 500, 1]  # (150-500 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["AAI"] = mode_widget
+
+        # VVI Mode Parameters
+        mode_widget = PaceMakerMode("VVI", [
+            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
+            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
+            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
+            ["Ventricular pulse width", 5, 190, 100],  # (0.05-1.9 ms)
+            ["Ventricular sensitivity", 25, 1000, 100],  # (0.25-10 mV)
+            ["VRP", 150, 500, 1],  # (150-500 ms)
+            ["Hysteresis interval", 200, 500, 1],  # (200-500 ms)
+            ["Low rate interval", 343, 2000, 1]  # (343-2000 ms)
+        ])
+        self.params_stacked_widget.addWidget(mode_widget)
+        self.mode["VVI"] = mode_widget
         main_layout = QVBoxLayout()  # Main layout
 
         # Title
