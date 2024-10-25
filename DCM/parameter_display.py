@@ -5,10 +5,10 @@ from PyQt5.QtGui import QIntValidator, QPixmap
 
 
 class PaceMakerParameter(QWidget):
-    def __init__(self, param_list):
+    def __init__(self, param_list, value):
         super().__init__()
         self.name = param_list[0]
-        self.value = (param_list[2]-param_list[1])//2 + param_list[1]
+        self.value = value
         self.decimal = param_list[3]
         self.name_label = QLabel(f"{self.name}: {self.value/self.decimal}")
         self.inputBox = QSlider(Qt.Horizontal)
@@ -36,7 +36,7 @@ class PaceMakerMode(QWidget):
         self.mode_name = QLabel(mode_name)
         self.mode_name.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
 
-        self.parameters = [PaceMakerParameter(param_list) for param_list in parameters]
+        self.parameters = [PaceMakerParameter(parameters[i], self.dcm.user_data[mode_name]) for i in range(len(parameters))]
         self.layout = QGridLayout()
         self.layout.addWidget(self.mode_name, 0, 0, 1, 4)
         self.setLayout(self.layout)
