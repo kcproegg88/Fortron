@@ -13,6 +13,7 @@ class LoginPage():
         self.layout.addLayout(self.right_side_layout, 1)
 
     def left_side(self):
+        """Creates the Login Side for the Login Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Login")
         title.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
@@ -56,6 +57,7 @@ class LoginPage():
         self.left_side_layout.addStretch()  # Bottom
 
     def right_side(self):
+        """Creates the Image side of the Login Side"""
         self.right_side_layout = QVBoxLayout()  # Vertical layout for image
         logo_label = QLabel()  # Label to hold image
         logo_label.setPixmap(self.dcm.logo)  # Set image pixmap
@@ -64,6 +66,7 @@ class LoginPage():
         self.right_side_layout.addStretch()
 
     def handle_login(self):
+        """Checks if the Login is Valid and sets warning messages"""
         username = self.username_input.text().strip()  # Get username
         password = self.password_input.text().strip()  # Get password
 
@@ -85,6 +88,7 @@ class LoginPage():
             self.login_warning.setText("Incorrect Username or Password")  # Show error message
 
     def show_register_page(self):
+        """Sets Page to Register Page"""
         self.dcm.page = 1
         self.dcm.run_gui()
 
@@ -94,6 +98,7 @@ class RegisterPage(LoginPage):
         super().__init__(dcm)
 
     def left_side(self):
+        """Input Side of Register Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Register")
         title.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
@@ -141,6 +146,7 @@ class RegisterPage(LoginPage):
         self.left_side_layout.addStretch()  # Bottom
 
     def handle_register(self):
+        """Checks Username and Key and sets Warning Messages"""
         username = self.reg_username_input.text().strip()  # Get username
         password = self.reg_password_input.text().strip()  # Get password
         key = self.reg_key_input.text().strip()  # Get key
@@ -168,5 +174,6 @@ class RegisterPage(LoginPage):
             self.reg_key_input.clear()
 
     def show_login_page(self):
+        """Changes Page to Login Page"""
         self.dcm.page = 0
         self.dcm.run_gui()
