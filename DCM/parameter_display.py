@@ -36,7 +36,7 @@ class PaceMakerMode(QWidget):
         self.mode_name = QLabel(mode_name)
         self.mode_name.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
 
-        self.parameters = [PaceMakerParameter(parameters[i], self.dcm.user_data[mode_name]) for i in range(len(parameters))]
+        self.parameters = [PaceMakerParameter(parameters[i], self.dcm.user_data[mode_name][i]) for i in range(len(parameters))]
         self.layout = QGridLayout()
         self.layout.addWidget(self.mode_name, 0, 0, 1, 4)
         self.setLayout(self.layout)

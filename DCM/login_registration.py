@@ -81,7 +81,10 @@ class LoginPage():
             self.dcm.user = username
             modes = ["AOO", "VOO", "AAI", "VVI"]
             for i in range(4):
-                self.dcm.user_data[modes[i]] = self.dcm.data[username][i]
+                try:
+                    self.dcm.user_data[modes[i]] = list(self.dcm.data[username][i])
+                except Exception as e:
+                    print(f"error was {e}")
             self.dcm.run_gui()
         else:
             self.login_warning.setText("Incorrect Username or Password")  # Show error message
