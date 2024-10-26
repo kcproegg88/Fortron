@@ -62,4 +62,3 @@ class PaceMakerMode(QWidget):
 
     def send_values(self):
         return [parameter.value for parameter in self.parameters]
-        # print(*[i.value for i in self.parameters], sep=" ")

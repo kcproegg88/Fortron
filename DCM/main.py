@@ -35,12 +35,7 @@ class DCM(QMainWindow):  # Main Window Class For DCM Application
                 if ':' in line:
                     username, password, saved_data = line.strip().split(':', 2)
                     self.users[username] = password
-
-                    try:
-                        self.data[username] = list(map(int, saved_data.split(',')))
-                    except Exception as e:
-                        print(f"error was {e}")
-                        print(saved_data)
+                    self.data[username] = [list(map(int, mode.split())) for mode in saved_data.split(",")]
 
     def write_user(self, username, password, data):
         with open(self.user_file, 'a') as f:
@@ -48,13 +43,8 @@ class DCM(QMainWindow):  # Main Window Class For DCM Application
         self.read_users()
 
     def save_parameters(self):
-        print("works")
-        try:
-            data = [" ".join(map(str, self.mode[i].send_values())) for i in ["AOO", "VOO", "AAI", "VVI"]]
-            print(data)
-            self.write_user(self.user, self.users[self.user], list(map(str, data)))
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        data = [" ".join(map(str, self.mode[i].send_values())) for i in ["AOO", "VOO", "AAI", "VVI"]]
+        self.write_user(self.user, self.users[self.user], list(map(str, data)))
 
     def sign_out(self):
         self.page = 0
