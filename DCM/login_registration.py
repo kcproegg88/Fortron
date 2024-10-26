@@ -1,9 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLineEdit, QPushButton, QLabel
-from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QStackedWidget, QComboBox, QFormLayout
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout
 from PyQt5.QtCore import Qt
-import sys
-import os
+
 
 class LoginPage():
     def __init__(self, dcm):
@@ -162,7 +160,7 @@ class RegisterPage(LoginPage):
         if username in self.dcm.users:
             self.register_warning.setText("Username already exists")  # Show error message
         else:
-            self.dcm.write_user(username, password, "102 112 18 97 102 112 18 97 102 112 18 97 512 325 325 102 112 18 97 512 325 350 1171".split())  # Add user to file
+            self.dcm.write_user(username, password, ["102 112 18 97", "102 112 18 97", "102 112 18 97 512 325 325", "102 112 18 97 512 325 350 1171"])  # Add user to file
             self.register_warning.setStyleSheet("color: green;")
             self.register_warning.setText("Registration successful! Please log in.")
             self.reg_username_input.clear()

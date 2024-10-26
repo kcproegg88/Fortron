@@ -1,104 +1,99 @@
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QMainWindow, QLineEdit, QPushButton, QSlider, QStackedWidget
-from PyQt5.QtWidgets import QFormLayout, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox
+from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QStackedWidget
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QComboBox
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIntValidator, QPixmap
 from parameter_display import PaceMakerMode
+
 
 class MainPage():
     def __init__(self, dcm):
         self.dcm = dcm
-        self.params_stacked_widget = QStackedWidget()
+        self.params_stacked_widget = QStackedWidget()  # Holds mode-specific parameter interfaces
         modes = ["AOO", "VOO", "AAI", "VVI"]
 
-        # AOO Mode Parameters
-        mode_widget = PaceMakerMode("AOO", self.dcm, [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Atrial pulse width", 5, 190, 100]  # (0.05-1.9 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.dcm.mode["AOO"] = mode_widget
+        # Initialize modes with their respective parameters
+        self.init_modes()
 
-        # VOO Mode Parameters
-        mode_widget = PaceMakerMode("VOO", self.dcm, [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Ventricular pulse width", 5, 190, 100]  # (0.05-1.9 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.dcm.mode["VOO"] = mode_widget
+        # Main layout setup
+        self.layout = QVBoxLayout()
+        self.setup_layout()
 
-        # AAI Mode Parameters
-        mode_widget = PaceMakerMode("AAI", self.dcm, [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Atrial amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Atrial pulse width", 5, 190, 100],  # (0.05-1.9 ms)
-            ["Atrial sensitivity", 25, 1000, 100],  # (0.25-10 mV)
-            ["ARP", 150, 500, 1],  # (150-500 ms)
-            ["PVARP", 150, 500, 1]  # (150-500 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.dcm.mode["AAI"] = mode_widget
+        # Connect mode selection combo box to update parameters
+        self.mode_combo.currentTextChanged.connect(self.update_parameters)
 
-        # VVI Mode Parameters
-        mode_widget = PaceMakerMode("VVI", self.dcm, [
-            ["Lower rate limit", 30, 175, 1],  # (30-175 ppm)
-            ["Upper rate limit", 50, 175, 1],  # (50-175 ppm)
-            ["Ventricular amplitude", 5, 32, 10],  # (0.5-3.2V)
-            ["Ventricular pulse width", 5, 190, 100],  # (0.05-1.9 ms)
-            ["Ventricular sensitivity", 25, 1000, 100],  # (0.25-10 mV)
-            ["VRP", 150, 500, 1],  # (150-500 ms)
-            ["Hysteresis interval", 200, 500, 1],  # (200-500 ms)
-            ["Low rate interval", 343, 2000, 1]  # (343-2000 ms)
-        ])
-        self.params_stacked_widget.addWidget(mode_widget)
-        self.dcm.mode["VVI"] = mode_widget
+    def init_modes(self):
+        """Creates and adds parameter widgets for each pacing mode."""
+        modes_params = {
+            "AOO": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                    ["Atrial amplitude", 5, 32, 10], ["Atrial pulse width", 5, 190, 100]],
+            "VOO": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                    ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100]],
+            "AAI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                    ["Atrial amplitude", 5, 32, 10], ["Atrial pulse width", 5, 190, 100],
+                    ["Atrial sensitivity", 25, 1000, 100], ["ARP", 150, 500, 1], ["PVARP", 150, 500, 1]],
+            "VVI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                    ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100],
+                    ["Ventricular sensitivity", 25, 1000, 100], ["VRP", 150, 500, 1],
+                    ["Hysteresis interval", 200, 500, 1], ["Low rate interval", 343, 2000, 1]]
+        }
 
-        self.layout = QVBoxLayout()  # Main layout
+        for mode, params in modes_params.items():
+            mode_widget = PaceMakerMode(mode, self.dcm, params)
+            self.params_stacked_widget.addWidget(mode_widget)
+            self.dcm.mode[mode] = mode_widget
 
+    def setup_layout(self):
+        """Sets up the main interface layout with labels, mode selection, and status indicators."""
         # Title
-        title = QLabel("DCM Main Interface")  # Title
-        title.setAlignment(Qt.AlignCenter)  # Center
+        title = QLabel("DCM Main Interface")
+        title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
 
-        # Pacing modes selection
-        mode_label = QLabel("Select Pacing Mode:")  # Label
-        self.mode_combo = QComboBox()  # Combo box
-        self.mode_combo.addItems(["AOO", "VOO", "AAI", "VVI"])  # Add pacing modes
+        # Mode selection
+        mode_label = QLabel("Select Pacing Mode:")
+        self.mode_combo = QComboBox()
+        self.mode_combo.addItems(["AOO", "VOO", "AAI", "VVI"])
 
-        # Programmable parameters display
-        params_label = QLabel("Programmable Parameters:")  # Label for parameters
+        # Parameter display
+        params_label = QLabel("Programmable Parameters:")
         params_label.setStyleSheet("font-weight: bold;")
-        self.params_widget = QWidget()  # Label for parameters
+        self.params_widget = QWidget()
         params_layout = QHBoxLayout()
         params_layout.addWidget(self.params_stacked_widget)
         self.params_widget.setLayout(params_layout)
 
+        # Bottom bar with status and sign-out button
+        bottom_bar = self.setup_bottom_bar()
 
-        # bottom bar
+        # Assemble layout
+        self.layout.addWidget(title)
+        self.layout.addWidget(mode_label)
+        self.layout.addWidget(self.mode_combo)
+        self.layout.addWidget(params_label)
+        self.layout.addWidget(self.params_widget)
+        self.layout.addLayout(bottom_bar)
+
+    def setup_bottom_bar(self):
+        """Sets up the bottom bar layout with communication and device status."""
         bottom_bar = QHBoxLayout()
 
         # Communication status
         comm_status_box = QVBoxLayout()
-        comm_status_label = QLabel("Communication Status:")  # Label for communication status
-        comm_status_label.setStyleSheet("font-weight: bold;")  # Bold text
-        self.comm_status = QLabel("Not Connected")  # Placeholder status
-        self.comm_status.setStyleSheet("color: red;")  # Red
-        comm_status_box.addWidget(comm_status_label)  # Add communication status label
-        comm_status_box.addWidget(self.comm_status)  # Add communication status
+        comm_status_label = QLabel("Communication Status:")
+        comm_status_label.setStyleSheet("font-weight: bold;")
+        self.comm_status = QLabel("Not Connected")
+        self.comm_status.setStyleSheet("color: red;")
+        comm_status_box.addWidget(comm_status_label)
+        comm_status_box.addWidget(self.comm_status)
         bottom_bar.addLayout(comm_status_box)
 
         # Device identification status
         device_status_box = QVBoxLayout()
-        device_status_label = QLabel("Device Status:")  # Label for device status
-        device_status_label.setStyleSheet("font-weight: bold;")  # Bold text
-        self.device_status = QLabel("No Device Detected")  # Placeholder status
-        self.device_status.setStyleSheet("color: red;")  # Red
-        device_status_box.addWidget(device_status_label)  # Add device status label
-        device_status_box.addWidget(self.device_status)  # Add device status placeholder
+        device_status_label = QLabel("Device Status:")
+        device_status_label.setStyleSheet("font-weight: bold;")
+        self.device_status = QLabel("No Device Detected")
+        self.device_status.setStyleSheet("color: red;")
+        device_status_box.addWidget(device_status_label)
+        device_status_box.addWidget(self.device_status)
         bottom_bar.addLayout(device_status_box)
 
         # Sign Out Button
@@ -106,20 +101,11 @@ class MainPage():
         sign_out_button.clicked.connect(self.dcm.sign_out)
         bottom_bar.addWidget(sign_out_button)
 
-        # Assemble main layout
-        self.layout.addWidget(title)  # Title
-        self.layout.addWidget(mode_label)  # Add pacing mode label
-        self.layout.addWidget(self.mode_combo)  # Add pacing mode
-        self.layout.addWidget(params_label)  # Add parameters label
-        self.layout.addWidget(self.params_widget)  # Add parameters label
-        self.layout.addLayout(bottom_bar)
-
-        self.mode_combo.currentTextChanged.connect(self.update_parameters)
+        return bottom_bar
 
     def update_parameters(self):
+        """Switches displayed parameters based on selected pacing mode."""
         selected_mode = self.mode_combo.currentText()
-        # Find the index of the selected mode in the combo box
         index = self.mode_combo.findText(selected_mode)
-
         if index != -1:
             self.params_stacked_widget.setCurrentIndex(index)
