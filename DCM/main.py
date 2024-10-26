@@ -64,5 +64,5 @@ class DCM(QMainWindow):  # Main application window
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     dcm = DCM()
-    dcm.showFullScreen()
+    dcm.showMaximized()
     sys.exit(app.exec())
