@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QPixmap
 import sys
+import os
 from login_registration import LoginPage, RegisterPage
 from mainpage import MainPage
 
@@ -10,6 +11,9 @@ class DCM(QMainWindow):  # Main application window
         super().__init__()
 
         # Main attributes and settings
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.logo = QPixmap(os.path.join(current_dir, "logo.png"))
+        self.user_file = os.path.join(current_dir, "users.txt")
         self.logo = QPixmap("logo.png")
         self.user_file = "users.txt"
         self.users, self.data = {}, {}
