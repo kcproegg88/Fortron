@@ -8,7 +8,6 @@ class MainPage():
     def __init__(self, dcm):
         self.dcm = dcm
         self.params_stacked_widget = QStackedWidget()  # Holds mode-specific parameter interfaces
-        modes = ["AOO", "VOO", "AAI", "VVI"]
 
         # Initialize modes with their respective parameters
         self.init_modes()
@@ -33,8 +32,7 @@ class MainPage():
             "VVI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
                     ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100],
                     ["Ventricular sensitivity", 25, 1000, 100], ["VRP", 150, 500, 1],
-                    ["Hysteresis interval", 200, 500, 1], ["Low rate interval", 343, 2000, 1]]
-        }
+                    ["Hysteresis interval", 200, 500, 1], ["Low rate interval", 343, 2000, 1]]}
 
         for mode, params in modes_params.items():
             mode_widget = PaceMakerMode(mode, self.dcm, params)
