@@ -15,11 +15,6 @@ class DCM(QMainWindow):  # Main application window
         self.users, self.data = {}, {}
         self.read_users()
 
-        # Create File if already not created
-        if not os.path.exists(self.user_file):
-            with open(self.user_file, 'w') as f:
-                pass  # Creates an empty file
-
         self.setWindowTitle("DCM")
         self.setStyleSheet("background-color: rgb(205, 205, 255);")
 
