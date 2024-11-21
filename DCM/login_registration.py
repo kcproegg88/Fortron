@@ -172,7 +172,7 @@ class RegisterPage(LoginPage):
         if username in self.dcm.users:
             self.register_warning.setText("Username already exists")  # Show error message
         else:
-            self.dcm.write_user(username, password, ["102 112 18 97", "102 112 18 97", "102 112 18 97 512 325 325", "102 112 18 97 512 325 350 1171"])  # Add user to file
+            self.dcm.write_user(username, password, [" ".join(map(str, i)) for i in self.dcm.default_data.values()])  # Add user to file
             self.register_warning.setStyleSheet("color: green;")
             self.register_warning.setText("Registration successful! Please log in.")
             self.reg_username_input.clear()

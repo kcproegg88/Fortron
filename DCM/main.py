@@ -25,8 +25,9 @@ class DCM(QMainWindow):  # Main application window
         # State variables for page navigation and user data
         self.max_users, self.key = 10, "1234"
         self.pacemaker_modes, self.user = {}, ""
-        self.user_data = {"AOO": [102, 112, 18, 97], "VOO": [102, 112, 18, 97],
-                          "AAI": [102, 112, 18, 97, 512, 325, 325],"VVI": [102, 112, 18, 97, 512, 325, 350, 1171]}
+        self.default_data = {"AOO": [102, 112, 18, 97], "VOO": [102, 112, 18, 97],
+                             "AAI": [102, 112, 18, 97, 512, 325, 325], "VVI": [102, 112, 18, 97, 512, 325, 350, 1171]}
+        self.user_data = {}
         self.page = 0
         self.pages_stacked_widget = QStackedWidget()
         self.login_page, self.register_page, self.main_page = LoginPage(self), RegisterPage(self), MainPage(self)
