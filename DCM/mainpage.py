@@ -4,8 +4,10 @@ from PyQt5.QtCore import Qt
 from parameter_display import PaceMakerMode
 
 
-class MainPage():
+class MainPage(QWidget):
     def __init__(self, dcm):
+        super().__init__()
+
         self.dcm = dcm
         self.params_stacked_widget = QStackedWidget()  # Holds mode-specific parameter interfaces
 
@@ -15,9 +17,9 @@ class MainPage():
         # Main layout setup
         self.layout = QVBoxLayout()
         self.setup_layout()
-
+        self.setLayout(self.layout)
         # Connect mode selection combo box to update parameters
-        self.mode_combo.currentTextChanged.connect(self.update_parameters)
+        self.mode_combo.currentTextChanged.connect(self.update_mode_selection)
 
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
@@ -37,7 +39,7 @@ class MainPage():
         for mode, params in modes_params.items():
             mode_widget = PaceMakerMode(mode, self.dcm, params)
             self.params_stacked_widget.addWidget(mode_widget)
-            self.dcm.mode[mode] = mode_widget
+            self.dcm.pacemaker_modes[mode] = mode_widget
 
     def setup_layout(self):
         """Sets up the main interface layout with labels, mode selection, and status indicators."""
@@ -101,7 +103,7 @@ class MainPage():
 
         return bottom_bar
 
-    def update_parameters(self):
+    def update_mode_selection(self):
         """Switches displayed parameters based on selected pacing mode."""
         selected_mode = self.mode_combo.currentText()
         index = self.mode_combo.findText(selected_mode)

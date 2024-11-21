@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStackedWidget
 from PyQt5.QtGui import QPixmap
 import sys
 import os
@@ -23,13 +23,15 @@ class DCM(QMainWindow):  # Main application window
         self.setStyleSheet("background-color: rgb(205, 205, 255);")
 
         # State variables for page navigation and user data
-        self.page = 0
-        self.pages = [None] * 3
         self.max_users, self.key = 10, "1234"
-        self.mode, self.user = {}, ""
+        self.pacemaker_modes, self.user = {}, ""
         self.user_data = {"AOO": [102, 112, 18, 97], "VOO": [102, 112, 18, 97],
                           "AAI": [102, 112, 18, 97, 512, 325, 325],"VVI": [102, 112, 18, 97, 512, 325, 350, 1171]}
-
+        self.page = 0
+        self.pages_stacked_widget = QStackedWidget()
+        self.login_page, self.register_page, self.main_page = LoginPage(self), RegisterPage(self), MainPage(self)
+        [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
+        self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
 
     def read_users(self):
@@ -49,7 +51,7 @@ class DCM(QMainWindow):  # Main application window
 
     def save_parameters(self):
         """Save the current user's settings for all modes."""
-        data = [" ".join(map(str, self.mode[i].send_values())) for i in ["AOO", "VOO", "AAI", "VVI"]]
+        data = [" ".join(map(str, self.pacemaker_modes[i].send_values())) for i in self.pacemaker_modes]
         self.write_user(self.user, self.users[self.user], list(map(str, data)))
 
     def sign_out(self):
@@ -57,12 +59,13 @@ class DCM(QMainWindow):  # Main application window
         self.page = 0
         self.run_gui()
 
+    def update_modes(self):
+        for mode in self.pacemaker_modes:
+            self.pacemaker_modes[mode].update_parameters()
+
     def run_gui(self):
         """Initialize and set the current page layout."""
-        self.pages[0], self.pages[1], self.pages[2] = LoginPage(self), RegisterPage(self), MainPage(self)
-        main_container = QWidget()
-        main_container.setLayout(self.pages[self.page].layout)
-        self.setCentralWidget(main_container)
+        self.pages_stacked_widget.setCurrentIndex(self.page)
 
 
 if __name__ == "__main__":

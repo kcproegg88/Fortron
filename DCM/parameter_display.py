@@ -33,6 +33,7 @@ class PaceMakerParameter(QWidget):
     def update_value_label(self, value):
         """Update the displayed value when the slider changes"""
         self.value = value
+        self.inputBox.setValue(self.value)
         self.name_label.setText(f"{self.name}: {self.value / self.decimal}")
 
 
@@ -40,9 +41,10 @@ class PaceMakerMode(QWidget):
     def __init__(self, mode_name, dcm, parameters):
         super().__init__()
         self.dcm = dcm
+        self.name = mode_name
 
         # Create a label for the mode name
-        self.mode_name = QLabel(mode_name)
+        self.mode_name = QLabel(self.name)
         self.mode_name.setStyleSheet("color: rgb(0, 0, 0);\nborder: 1px solid black;\n")
 
         # Initialize parameters for this mode using PaceMakerParameter instances
@@ -79,6 +81,10 @@ class PaceMakerMode(QWidget):
         logo_label = QLabel()
         logo_label.setPixmap(QPixmap("grid.png"))
         self.layout.addWidget(logo_label, 1, 1, len(self.parameters), 2)
+
+    def update_parameters(self):
+        for i in range(len(self.parameters)):
+            self.parameters[i].update_value_label(self.dcm.user_data[self.name][i])
 
     def send_values(self):
         """Gather current parameter values for further processing"""

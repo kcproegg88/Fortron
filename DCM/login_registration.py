@@ -1,16 +1,19 @@
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
+from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QLabel
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout
 from PyQt5.QtCore import Qt
 
 
-class LoginPage():
+class LoginPage(QWidget):
     def __init__(self, dcm):
+        super().__init__()
+
         self.dcm = dcm
         self.layout = QHBoxLayout()
         self.left_side()
         self.right_side()
         self.layout.addLayout(self.left_side_layout, 1)
         self.layout.addLayout(self.right_side_layout, 1)
+        self.setLayout(self.layout)
 
     def left_side(self):
         """Creates the Login Side for the Login Page"""
@@ -83,6 +86,9 @@ class LoginPage():
             modes = ["AOO", "VOO", "AAI", "VVI"]
             for i in range(4):
                 self.dcm.user_data[modes[i]] = list(self.dcm.data[username][i])
+            print("updated user data")
+            print(self.dcm.user_data)
+            self.dcm.update_modes()
             self.dcm.run_gui()
         else:
             self.login_warning.setText("Incorrect Username or Password")  # Show error message
