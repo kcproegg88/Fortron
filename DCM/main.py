@@ -5,6 +5,7 @@ import os
 from login_registration import LoginPage, RegisterPage
 from mainpage import MainPage
 from serial_coms import serial_stuff
+from PyQt5.QtCore import QTimer
 
 
 class DCM(QMainWindow):  # Main application window
@@ -36,6 +37,7 @@ class DCM(QMainWindow):  # Main application window
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
         serial_stuff(self)
+        QTimer.singleShot(1, QApplication.quit)
 
     def read_users(self):
         """Load user credentials and settings from file."""
