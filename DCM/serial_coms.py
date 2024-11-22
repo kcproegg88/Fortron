@@ -1,5 +1,6 @@
 import serial
 
+
 def serial_stuff(dcm):
         with serial.Serial(port='COM5', baudrate=115200, timeout=1) as ser:
 

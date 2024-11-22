@@ -4,6 +4,7 @@ import sys
 import os
 from login_registration import LoginPage, RegisterPage
 from mainpage import MainPage
+from serial_coms import serial_stuff
 
 
 class DCM(QMainWindow):  # Main application window
@@ -34,6 +35,7 @@ class DCM(QMainWindow):  # Main application window
         [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
+        serial_stuff(dcm)
 
     def read_users(self):
         """Load user credentials and settings from file."""
