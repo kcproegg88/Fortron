@@ -30,11 +30,30 @@ class MainPage(QWidget):
                     ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100]],
             "AAI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
                     ["Atrial amplitude", 5, 32, 10], ["Atrial pulse width", 5, 190, 100],
-                    ["Atrial sensitivity", 25, 1000, 100], ["ARP", 150, 500, 1], ["PVARP", 150, 500, 1]],
+                    ["Atrial sensitivity", 25, 1000, 100], ["ARP", 150, 500, 1], ["PVARP", 150, 500, 1],
+                    ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1]],
             "VVI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
                     ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100],
                     ["Ventricular sensitivity", 25, 1000, 100], ["VRP", 150, 500, 1],
-                    ["Hysteresis interval", 200, 500, 1], ["Low rate interval", 343, 2000, 1]]}
+                    ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1]],
+            "AOOR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                     ["Maximum Sensor Rate", 50, 175, 1], ["Atrial amplitude", 5, 32, 10],
+                     ["Atrial pulse width", 5, 190, 100],
+                     ["Reaction Time", 10, 50, 1], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
+            "VOOR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],    
+                     ["Maximum Sensor Rate", 50, 175, 1], ["Ventricular amplitude", 5, 32, 10],
+                     ["Ventricular pulse width", 5, 190, 100], 
+                     ["Reaction Time", 10, 50, 1], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
+            "AAIR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                     ["Maximum Sensor Rate", 50, 175, 1], ["Atrial amplitude", 5, 32, 10],
+                     ["Atrial pulse width", 5, 190, 100], ["Atrial Sensitivity", 25, 1000, 100], ["ARP", 150, 500, 10],
+                     ["PVARP", 150, 500, 10], ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1],
+                     ["Reaction Time", 10, 50, 10], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
+            "VVIR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
+                     ["Maximum Sensor Rate", 50, 175, 1], ["Ventricular amplitude", 5, 32, 10],
+                     ["Ventricular pulse width", 5, 190, 100], ["Ventricular Sensitivity", 25, 1000, 100], ["VRP", 150, 500, 10],
+                     ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1],
+                     ["Reaction Time", 10, 50, 10], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]]}
 
         for mode, params in modes_params.items():
             mode_widget = PaceMakerMode(mode, self.dcm, params)
@@ -51,7 +70,7 @@ class MainPage(QWidget):
         # Mode selection
         mode_label = QLabel("Select Pacing Mode:")
         self.mode_combo = QComboBox()
-        self.mode_combo.addItems(["AOO", "VOO", "AAI", "VVI"])
+        self.mode_combo.addItems(["AOO", "VOO", "AAI", "VVI","AOOR", "VOOR", "AAIR", "VVIR"])
 
         # Parameter display
         params_label = QLabel("Programmable Parameters:")

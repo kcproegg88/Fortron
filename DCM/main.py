@@ -27,17 +27,21 @@ class DCM(QMainWindow):  # Main application window
         # State variables for page navigation and user data
         self.max_users, self.key = 10, "1234"
         self.pacemaker_modes, self.user = {}, ""
-        self.default_data = {"AOO": [102, 112, 18, 97], "VOO": [102, 112, 18, 97],
-                             "AAI": [102, 112, 18, 97, 512, 325, 325], "VVI": [102, 112, 18, 97, 512, 325, 350, 1171]}
-        self.user_data = {}
+        self.default_data = {"AOO": [60, 120, 5, 40], "VOO": [60, 120, 5, 40],
+                             "AAI": [60, 120, 5, 40, 75, 250, 250, 60, 0], "VVI": [60, 120, 5, 40, 250, 320, 60, 0],
+                             "AOOR": [60, 120, 120, 5, 40, 30, 8, 5], "VOOR": [60, 120, 120, 5, 40, 30, 8, 5],
+                             "AAIR": [60, 120, 120, 5, 40, 75, 250, 250, 60, 0, 30, 8, 5], 
+                             "VVIR": [60, 120, 120, 5, 40, 250, 320, 60, 0, 30, 8, 5]}
+
+        self.user_data = {mode: values[:] for mode, values in self.default_data.items()}
         self.page = 0
         self.pages_stacked_widget = QStackedWidget()
         self.login_page, self.register_page, self.main_page = LoginPage(self), RegisterPage(self), MainPage(self)
         [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
-        serial_stuff(self)
-        QTimer.singleShot(1, QApplication.quit)
+        #serial_stuff(self)
+        #QTimer.singleShot(1, QApplication.quit)
 
     def read_users(self):
         """Load user credentials and settings from file."""
