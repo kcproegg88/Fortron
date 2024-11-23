@@ -32,6 +32,7 @@ class PaceMakerParameter(QWidget):
     def update_value_label(self, value):
         """Update the displayed value when the slider changes"""
         self.value = value
+        self.inputBox.setValue(self.value)
         self.name_label.setText(f"{self.name}: {self.value / self.decimal}")
 
 class PaceMakerMode(QWidget):
@@ -58,6 +59,7 @@ class PaceMakerMode(QWidget):
 
         # Save, Load, and Send buttons with improved styles
         self.save_button = QPushButton("Save")
+        self.save_button.clicked.connect(self.dcm.save_parameters)
         self.save_button.setStyleSheet("background-color: #5cb85c; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
         self.load_data_button = QPushButton("Load Egram Data")
         self.load_data_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
