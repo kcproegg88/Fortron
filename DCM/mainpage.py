@@ -68,9 +68,46 @@ class MainPage(QWidget):
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
 
         # Mode selection
+        combo_style = """
+        QComboBox {
+            background-color: #f0f0f0;
+            border: 1px solid #5c5c5c;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 14px;
+            color: #333333;
+        }
+
+        QComboBox:hover {
+            background-color: #e6e6e6;
+        }
+
+        QComboBox::drop-down {
+            border-left: 1px solid #5c5c5c;
+            background-color: #dcdcdc;
+            width: 20px;
+        }
+
+        QComboBox::down-arrow {
+            image: url(down_arrow.png); /* Replace with your custom arrow image */
+            width: 10px;
+            height: 10px;
+        }
+
+        QComboBox QAbstractItemView {
+            background-color: white;
+            border: 1px solid #5c5c5c;
+            border-radius: 5px;
+            padding: 2px;
+            selection-background-color: #0078d7;
+            selection-color: white;
+        }
+        """
         mode_label = QLabel("Select Pacing Mode:")
         self.mode_combo = QComboBox()
         self.mode_combo.addItems(["AOO", "VOO", "AAI", "VVI","AOOR", "VOOR", "AAIR", "VVIR"])
+        self.mode_combo.setStyleSheet(combo_style)
+        
 
         # Parameter display
         params_label = QLabel("Programmable Parameters:")
@@ -117,9 +154,9 @@ class MainPage(QWidget):
 
         # Sign Out Button
         sign_out_button = QPushButton("Sign Out")
+        sign_out_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
         sign_out_button.clicked.connect(self.dcm.sign_out)
         bottom_bar.addWidget(sign_out_button)
-
         return bottom_bar
 
     def update_mode_selection(self):
