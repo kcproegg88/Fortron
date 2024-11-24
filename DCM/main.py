@@ -37,7 +37,6 @@ class DCM(QMainWindow):  # Main application window
         #serial_stuff(self)
         #QTimer.singleShot(1, QApplication.quit)
 
-
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
         self.pacemaker_modes, self.user = {}, ""

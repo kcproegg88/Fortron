@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QStackedWidget
+from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QStackedWidget, QTabWidget
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QComboBox
 from PyQt5.QtCore import Qt
 
@@ -8,11 +8,10 @@ class MainPage(QWidget):
         super().__init__()
 
         self.dcm = dcm
-        self.params_stacked_widget = QStackedWidget()  # Holds mode-specific parameter interfaces
 
-        # Initialize modes with their respective parameters
+        self.mode_tabs = QTabWidget()
         for mode in self.dcm.pacemaker_modes:
-            self.params_stacked_widget.addWidget(self.dcm.pacemaker_modes[mode])
+            self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
 
         # Main layout setup
         self.setup_layout()
@@ -25,55 +24,12 @@ class MainPage(QWidget):
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
 
-        # Mode selection
-        combo_style = """
-        QComboBox {
-            background-color: #f0f0f0;
-            border: 1px solid #5c5c5c;
-            border-radius: 5px;
-            padding: 5px;
-            font-size: 14px;
-            color: #333333;
-        }
-
-        QComboBox:hover {
-            background-color: #e6e6e6;
-        }
-
-        QComboBox::drop-down {
-            border-left: 1px solid #5c5c5c;
-            background-color: #dcdcdc;
-            width: 20px;
-        }
-
-        QComboBox::down-arrow {
-            image: url(down_arrow.png); /* Replace with your custom arrow image */
-            width: 10px;
-            height: 10px;
-        }
-
-        QComboBox QAbstractItemView {
-            background-color: white;
-            border: 1px solid #5c5c5c;
-            border-radius: 5px;
-            padding: 2px;
-            selection-background-color: #0078d7;
-            selection-color: white;
-        }
-        """
-        mode_label = QLabel("Select Pacing Mode:")
-        self.mode_combo = QComboBox()
-        self.mode_combo.addItems(self.dcm.pacemaker_modes.keys())
-        self.mode_combo.setStyleSheet(combo_style)
-        self.mode_combo.currentTextChanged.connect(self.update_mode_selection)
-        
-
         # Parameter display
         params_label = QLabel("Programmable Parameters:")
         params_label.setStyleSheet("font-weight: bold;")
         self.params_widget = QWidget()
         params_layout = QHBoxLayout()
-        params_layout.addWidget(self.params_stacked_widget)
+        params_layout.addWidget(self.mode_tabs)
         self.params_widget.setLayout(params_layout)
 
         # Interface Bare with Save Load and Send button
@@ -84,8 +40,6 @@ class MainPage(QWidget):
         # Assemble layout
         self.layout = QVBoxLayout()
         self.layout.addWidget(title)
-        self.layout.addWidget(mode_label)
-        self.layout.addWidget(self.mode_combo)
         self.layout.addWidget(params_label)
         self.layout.addWidget(self.params_widget)
         self.layout.addLayout(bottom_bar)
@@ -120,11 +74,6 @@ class MainPage(QWidget):
         sign_out_button.clicked.connect(self.sign_out)
         bottom_bar.addWidget(sign_out_button)
         return bottom_bar
-
-    def update_mode_selection(self):
-        """Switches displayed parameters based on selected pacing mode."""
-        index = self.mode_combo.findText(self.mode_combo.currentText())
-        self.params_stacked_widget.setCurrentIndex(index)
 
     def sign_out(self):
         """Log out current user and return to the login page."""

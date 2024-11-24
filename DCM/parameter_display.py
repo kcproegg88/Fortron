@@ -35,6 +35,7 @@ class PaceMakerParameter(QWidget):
         self.inputBox.setValue(self.value)
         self.name_label.setText(f"{self.name}: {self.value / self.decimal}")
 
+
 class PaceMakerMode(QWidget):
     def __init__(self, mode_name, dcm, parameters):
         super().__init__()

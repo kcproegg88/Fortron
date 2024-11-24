@@ -91,9 +91,9 @@ class LoginPage(QWidget):
         if username in self.dcm.users and self.dcm.users[username] == password:
             self.dcm.page = 2
             self.dcm.user = username
-            modes = ["AOO", "VOO", "AAI", "VVI"]
-            for i in range(4):
-                self.dcm.user_data[modes[i]] = list(self.dcm.data[username][i])
+            for mode in range(len(self.dcm.pacemaker_modes)):
+                print(self.dcm.data[username])
+                self.dcm.user_data[list(self.dcm.pacemaker_modes)[mode]] = self.dcm.data[username][mode]
             print("updated user data")
             print(self.dcm.user_data)
             self.dcm.update_modes()
