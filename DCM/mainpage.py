@@ -44,7 +44,15 @@ class MainPage(QWidget):
         self.layout.addLayout(self.setup_bottom_bar())
 
     def setup_setting_bar(self):
-        pass
+        setting_bar = QHBoxLayout()
+        save_all_button = QPushButton("Save All Modes")
+        reset_all_button = QPushButton("Reset All Modes")
+        change_ui = QPushButton("Change UI")
+        connect_button = QPushButton("Connect")
+
+        for button in [save_all_button, reset_all_button, change_ui, connect_button]:
+            setting_bar.addWidget(button)
+        return setting_bar
 
     def setup_bottom_bar(self):
         """Sets up the bottom bar layout with communication and device status."""

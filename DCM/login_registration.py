@@ -92,7 +92,6 @@ class LoginPage(QWidget):
             self.dcm.page = 2
             self.dcm.user = username
             for mode in range(len(self.dcm.pacemaker_modes)):
-                print(self.dcm.data[username])
                 self.dcm.user_data[list(self.dcm.pacemaker_modes)[mode]] = self.dcm.data[username][mode]
             print("updated user data")
             print(self.dcm.user_data)

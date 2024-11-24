@@ -60,7 +60,7 @@ class PaceMakerMode(QWidget):
 
         # Save, Load, and Send buttons with improved styles
         parameter_buttons_layout = QHBoxLayout()
-        self.save_button = QPushButton("Save")
+        self.save_button = QPushButton("Save Mode")
         self.save_button.clicked.connect(self.dcm.save_parameters)
         self.save_button.setStyleSheet("background-color: #5cb85c; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
         self.load_data_button = QPushButton("Load Egram Data")
