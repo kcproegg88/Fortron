@@ -48,9 +48,8 @@ class MainPage(QWidget):
         save_all_button = QPushButton("Save All Modes")
         reset_all_button = QPushButton("Reset All Modes")
         change_ui = QPushButton("Change UI")
-        connect_button = QPushButton("Connect")
 
-        for button in [save_all_button, reset_all_button, change_ui, connect_button]:
+        for button in [save_all_button, reset_all_button, change_ui]:
             setting_bar.addWidget(button)
         return setting_bar
 
