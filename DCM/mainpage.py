@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QStackedWidget, QTabWidget
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QComboBox
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 
 
 class MainPage(QWidget):
@@ -8,41 +9,42 @@ class MainPage(QWidget):
         super().__init__()
 
         self.dcm = dcm
-
-        self.mode_tabs = QTabWidget()
-        for mode in self.dcm.pacemaker_modes:
-            self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
-
-        # Main layout setup
         self.setup_layout()
         self.setLayout(self.layout)
 
     def setup_layout(self):
         """Sets up the main interface layout with labels, mode selection, and status indicators."""
-        # Title
+        self.layout = QVBoxLayout()
+
+        top_bar = QHBoxLayout()
+
         title = QLabel("DCM Main Interface")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
 
+        top_bar.addWidget(title)
+
         # Parameter display
-        params_label = QLabel("Programmable Parameters:")
-        params_label.setStyleSheet("font-weight: bold;")
-        self.params_widget = QWidget()
-        params_layout = QHBoxLayout()
-        params_layout.addWidget(self.mode_tabs)
-        self.params_widget.setLayout(params_layout)
 
-        # Interface Bare with Save Load and Send button
+        data_bar = QHBoxLayout()
 
-        # Bottom bar with status and sign-out button
-        bottom_bar = self.setup_bottom_bar()
+        self.mode_tabs = QTabWidget()
+        for mode in self.dcm.pacemaker_modes:
+            self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
+
+        data_bar.addWidget(self.mode_tabs, 1)
+        logo_label = QLabel()
+        logo_label.setPixmap(QPixmap("grid.png"))
+        data_bar.addWidget(logo_label, 1)
 
         # Assemble layout
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(title)
-        self.layout.addWidget(params_label)
-        self.layout.addWidget(self.params_widget)
-        self.layout.addLayout(bottom_bar)
+        self.layout.addLayout(top_bar)
+        self.layout.addLayout(data_bar)
+        self.layout.addLayout(self.setup_setting_bar())
+        self.layout.addLayout(self.setup_bottom_bar())
+
+    def setup_setting_bar(self):
+        pass
 
     def setup_bottom_bar(self):
         """Sets up the bottom bar layout with communication and device status."""

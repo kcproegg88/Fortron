@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QSlider
-from PyQt5.QtWidgets import QHBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
@@ -48,17 +48,18 @@ class PaceMakerMode(QWidget):
 
         # Initialize parameters for this mode using PaceMakerParameter instances
         self.parameters = [PaceMakerParameter(parameters[i], self.dcm.default_data[mode_name][i]) for i in range(len(parameters))]
-        self.layout = QGridLayout()
-        self.layout.addWidget(self.mode_name, 0, 0, 1, 4)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.mode_name)
         self.setLayout(self.layout)
         self.add_parameters()
 
     def add_parameters(self):
         """Add parameter widgets to the layout"""
         for i in range(len(self.parameters)):
-            self.layout.addWidget(self.parameters[i], i + 1, 0, 1, 3)
+            self.layout.addWidget(self.parameters[i])
 
         # Save, Load, and Send buttons with improved styles
+        parameter_buttons_layout = QHBoxLayout()
         self.save_button = QPushButton("Save")
         self.save_button.clicked.connect(self.dcm.save_parameters)
         self.save_button.setStyleSheet("background-color: #5cb85c; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
@@ -68,14 +69,16 @@ class PaceMakerMode(QWidget):
         self.send_data_button.setStyleSheet("background-color: #d9534f; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         # Adding buttons to the layout
-        self.layout.addWidget(self.save_button, len(self.parameters) + 1, 0)
-        self.layout.addWidget(self.load_data_button, len(self.parameters) + 1, 1)
-        self.layout.addWidget(self.send_data_button, len(self.parameters) + 1, 2)
+        parameter_buttons_layout.addWidget(self.save_button)
+        parameter_buttons_layout.addWidget(self.load_data_button)
+        parameter_buttons_layout.addWidget(self.send_data_button)
+        self.layout.addStretch()
+        self.layout.addLayout(parameter_buttons_layout)
 
-        # Display logo
-        logo_label = QLabel()
-        logo_label.setPixmap(QPixmap("grid.png"))
-        self.layout.addWidget(logo_label, 1, 3, len(self.parameters), 1)
+        # # Display logo
+        # logo_label = QLabel()
+        # logo_label.setPixmap(QPixmap("grid.png"))
+        # self.layout.addWidget(logo_label, 1, 3, len(self.parameters), 1)
 
     def update_parameters(self):
         """Update parameter sliders and labels with user data."""
