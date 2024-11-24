@@ -190,5 +190,5 @@ codegen/
 # Octave session info
 octave-workspace
 
-DCM/users.txt
+/DCM/users.txt
 
