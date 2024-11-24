@@ -40,8 +40,8 @@ class MainPage(QWidget):
         # Assemble layout
         self.layout.addLayout(top_bar)
         self.layout.addLayout(data_bar)
-        self.layout.addLayout(self.setup_setting_bar())
-        self.layout.addLayout(self.setup_bottom_bar())
+        self.setup_setting_bar()
+        self.setup_bottom_bar()
 
     def setup_setting_bar(self):
         setting_bar = QHBoxLayout()
@@ -51,7 +51,7 @@ class MainPage(QWidget):
 
         for button in [save_all_button, reset_all_button, change_ui]:
             setting_bar.addWidget(button)
-        return setting_bar
+        self.layout.addLayout(setting_bar)
 
     def setup_bottom_bar(self):
         """Sets up the bottom bar layout with communication and device status."""
@@ -82,7 +82,7 @@ class MainPage(QWidget):
         sign_out_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
         sign_out_button.clicked.connect(self.sign_out)
         bottom_bar.addWidget(sign_out_button)
-        return bottom_bar
+        self.layout.addLayout(bottom_bar)
 
     def sign_out(self):
         """Log out current user and return to the login page."""

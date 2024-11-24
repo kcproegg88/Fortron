@@ -5,8 +5,8 @@ import os
 from login_registration import LoginPage, RegisterPage
 from mainpage import MainPage
 from parameter_display import PaceMakerMode
-from serial_coms import serial_stuff
-from PyQt5.QtCore import QTimer
+# from serial_coms import serial_stuff
+# from PyQt5.QtCore import QTimer
 
 
 class DCM(QMainWindow):  # Main application window
