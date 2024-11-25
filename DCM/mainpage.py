@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QStackedWidget, QTabWi
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QComboBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+import styling  # Add this import
+
 
 
 class MainPage(QWidget):
@@ -20,7 +22,7 @@ class MainPage(QWidget):
 
         title = QLabel("DCM Main Interface")
         title.setAlignment(Qt.AlignCenter)
-        title.setStyleSheet("font-size: 24px; font-weight: bold;")
+        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
 
         top_bar.addWidget(title)
 
@@ -29,6 +31,7 @@ class MainPage(QWidget):
         data_bar = QHBoxLayout()
 
         self.mode_tabs = QTabWidget()
+        self.mode_tabs.setStyleSheet(styling.TABWIDGET_STYLE)
         for mode in self.dcm.pacemaker_modes:
             self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
 
@@ -45,9 +48,15 @@ class MainPage(QWidget):
 
     def setup_setting_bar(self):
         setting_bar = QHBoxLayout()
+        
         save_all_button = QPushButton("Save All Modes")
         reset_all_button = QPushButton("Reset All Modes")
         change_ui = QPushButton("Change UI")
+        
+        save_all_button.setStyleSheet(styling.BUTTON_STYLE)
+        reset_all_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
+        change_ui.setStyleSheet(styling.TERTIARY_BUTTON_STYLE)
+
 
         for button in [save_all_button, reset_all_button, change_ui]:
             setting_bar.addWidget(button)
@@ -79,7 +88,7 @@ class MainPage(QWidget):
 
         # Sign Out Button
         sign_out_button = QPushButton("Sign Out")
-        sign_out_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        sign_out_button.setStyleSheet(styling.BUTTON_STYLE)
         sign_out_button.clicked.connect(self.sign_out)
         bottom_bar.addWidget(sign_out_button)
         self.layout.addLayout(bottom_bar)

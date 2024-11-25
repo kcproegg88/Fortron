@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QLabel
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout
 from PyQt5.QtCore import Qt
+import styling  # Add this import
 
 
 class LoginPage(QWidget):
@@ -19,23 +20,21 @@ class LoginPage(QWidget):
         """Creates the Login Side for the Login Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Login")
-        title.setStyleSheet("font-size: 36px; font-weight: bold; color: #2D3E50; margin-bottom: 20px;")
+        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
         title.setAlignment(Qt.AlignCenter)
 
         # Login form layout
         login_layout = QFormLayout()  # Form layout for inputs
 
         label_username = QLabel("User Name")  # Username label
-        label_username.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label 
+        label_username.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)
         self.username_input = QLineEdit()
-        self.username_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
+        self.username_input.setStyleSheet(styling.INPUT_STYLE)
 
         label_password = QLabel("Password")  # Password label
-        label_password.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
+        label_password.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)
         self.password_input = QLineEdit()
-        self.password_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
+        self.password_input.setStyleSheet(styling.INPUT_STYLE)
         self.password_input.setEchoMode(QLineEdit.Password)  # Hide password
 
         login_layout.addRow(label_username, self.username_input)  # Add username row
@@ -43,13 +42,11 @@ class LoginPage(QWidget):
 
         # Login and Register buttons
         login_button = QPushButton("Login")  # Login button
-        login_button.setStyleSheet(
-            "background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        login_button.setStyleSheet(styling.BUTTON_STYLE)
         login_button.clicked.connect(self.handle_login)  # Call handle_login method
 
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(
-            "background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
         register_button.clicked.connect(self.show_register_page)  # Call show_register_page method
 
         # Warning label for login errors
@@ -113,29 +110,26 @@ class RegisterPage(LoginPage):
         """Input Side of Register Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Register")
-        title.setStyleSheet("font-size: 36px; font-weight: bold; color: #2D3E50; margin-bottom: 20px;")
+        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
         title.setAlignment(Qt.AlignCenter)
 
         # Registration form layout
         register_form = QFormLayout()  # Form layout
         label_username = QLabel("User Name")  # Username label
-        label_username.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
+        label_username.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_username_input = QLineEdit()  # Input
-        self.reg_username_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_username_input.setStyleSheet(styling.INPUT_STYLE)
 
         label_password = QLabel("Password")  # Password label
-        label_password.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
+        label_password.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_password_input = QLineEdit()  # Input for password
-        self.reg_password_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_password_input.setStyleSheet(styling.INPUT_STYLE)
         self.reg_password_input.setEchoMode(QLineEdit.Password)  # Hide 
 
         label_key = QLabel("Key")  # Key label
-        label_key.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
+        label_key.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_key_input = QLineEdit()  # Input for key
-        self.reg_key_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_key_input.setStyleSheet(styling.INPUT_STYLE)
         self.reg_key_input.setEchoMode(QLineEdit.Password)  # Hide
 
         register_form.addRow(label_username, self.reg_username_input)  # Add username row to form
@@ -144,13 +138,11 @@ class RegisterPage(LoginPage):
 
         # Register and Back buttons
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(
-            "background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
         register_button.clicked.connect(self.handle_register)  # Call handle_register method
 
         back_button = QPushButton("Back")  # Back button 
-        back_button.setStyleSheet(
-            "background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        back_button.setStyleSheet(styling.TERTIARY_BUTTON_STYLE)
         back_button.clicked.connect(self.show_login_page)  # Call show_login_page method
 
         # Warning label for registration errors
