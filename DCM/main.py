@@ -23,7 +23,8 @@ class DCM(QMainWindow):  # Main application window
         self.read_users()
 
         self.setWindowTitle("DCM")
-        self.setStyleSheet(styling.WINDOW_STYLE)  # Apply window style
+        self.style_manager = styling.StyleManager()
+        self.apply_styles()
 
         # State variables for page navigation and user data
         self.max_users, self.key = 10, "1234"
@@ -31,13 +32,30 @@ class DCM(QMainWindow):  # Main application window
 
         self.page = 0
         self.pages_stacked_widget = QStackedWidget()
-        self.login_page, self.register_page, self.main_page = LoginPage(self), RegisterPage(self), MainPage(self)
-        [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
+        self.login_page = LoginPage(self)
+        self.register_page = RegisterPage(self)
+        self.main_page = MainPage(self)
+        for page_widget in [self.login_page, self.register_page, self.main_page]:
+            self.pages_stacked_widget.addWidget(page_widget)
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
+        
         #serial_stuff(self)
         #QTimer.singleShot(1, QApplication.quit)
 
+    def apply_styles(self):
+        """Sets style manager"""
+        self.setStyleSheet(self.style_manager.stylesheet)
+        
+    def change_theme(self):
+        """Changes themes in all pages"""
+        themes = list(self.style_manager.themes.keys())
+        current_index = themes.index(self.style_manager.current_theme)
+        next_index = (current_index + 1) % len(themes)
+        next_theme = themes[next_index]
+        self.style_manager.set_theme(next_theme)
+        self.apply_styles()
+        
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
         self.pacemaker_modes, self.user = {}, ""

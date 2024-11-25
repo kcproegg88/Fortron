@@ -14,7 +14,6 @@ class PaceMakerParameter(QWidget):
 
         # Create a label to display the parameter's name and current value
         self.name_label = QLabel(f"{self.name}: {self.value / self.decimal}")
-        self.name_label.setStyleSheet(styling.LABEL_NORMAL_STYLE)  # Add padding
         self.name_label.setWordWrap(True)  # Enable wrapping for long text
 
         # Set up a slider for user input on the parameter value
@@ -23,7 +22,6 @@ class PaceMakerParameter(QWidget):
         self.inputBox.setMaximum(param_list[2])
         self.inputBox.setValue(self.value)
         self.inputBox.valueChanged.connect(self.update_value_label)
-        self.inputBox.setStyleSheet(styling.SLIDER_STYLE)
 
         # Layout configuration for the parameter display
         layout = QHBoxLayout()
@@ -47,7 +45,6 @@ class PaceMakerMode(QWidget):
 
         # Create a label for the mode name
         self.mode_name = QLabel(self.name)
-        self.mode_name.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)
 
         # Initialize parameters for this mode using PaceMakerParameter instances
         self.parameters = [PaceMakerParameter(parameters[i], self.dcm.default_data[mode_name][i]) for i in range(len(parameters))]
@@ -65,11 +62,8 @@ class PaceMakerMode(QWidget):
         parameter_buttons_layout = QHBoxLayout()
         self.save_button = QPushButton("Save Mode")
         self.save_button.clicked.connect(self.dcm.save_parameters)
-        self.save_button.setStyleSheet(styling.BUTTON_STYLE)
         self.load_data_button = QPushButton("Load Egram Data")
-        self.load_data_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
         self.send_data_button = QPushButton("Send to Pacemaker")
-        self.send_data_button.setStyleSheet(styling.TERTIARY_BUTTON_STYLE)
 
         # Adding buttons to the layout
         parameter_buttons_layout.addWidget(self.save_button)

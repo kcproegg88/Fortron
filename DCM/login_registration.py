@@ -20,21 +20,16 @@ class LoginPage(QWidget):
         """Creates the Login Side for the Login Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Login")
-        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
         title.setAlignment(Qt.AlignCenter)
 
         # Login form layout
         login_layout = QFormLayout()  # Form layout for inputs
 
         label_username = QLabel("User Name")  # Username label
-        label_username.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)
         self.username_input = QLineEdit()
-        self.username_input.setStyleSheet(styling.INPUT_STYLE)
 
         label_password = QLabel("Password")  # Password label
-        label_password.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)
         self.password_input = QLineEdit()
-        self.password_input.setStyleSheet(styling.INPUT_STYLE)
         self.password_input.setEchoMode(QLineEdit.Password)  # Hide password
 
         login_layout.addRow(label_username, self.username_input)  # Add username row
@@ -42,16 +37,13 @@ class LoginPage(QWidget):
 
         # Login and Register buttons
         login_button = QPushButton("Login")  # Login button
-        login_button.setStyleSheet(styling.BUTTON_STYLE)
         login_button.clicked.connect(self.handle_login)  # Call handle_login method
 
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
         register_button.clicked.connect(self.show_register_page)  # Call show_register_page method
 
         # Warning label for login errors
         self.login_warning = QLabel("")  # Label
-        self.login_warning.setStyleSheet("color: red; font-size: 14px;")  # Red
         self.login_warning.setAlignment(Qt.AlignCenter)  # Center
 
         # Assemble left side layout
@@ -68,7 +60,6 @@ class LoginPage(QWidget):
         self.right_side_layout = QVBoxLayout()  # Vertical layout for image
         logo_label = QLabel()  # Label to hold image
         logo_label.setPixmap(self.dcm.logo)  # Set image pixmap
-        logo_label.setStyleSheet("border: 3px solid #2D3E50; border-radius: 10px;")  # Add border around image
         self.right_side_layout.addStretch()
         self.right_side_layout.addWidget(logo_label, alignment=Qt.AlignCenter)  # Add image to layout and center
         self.right_side_layout.addStretch()
@@ -110,26 +101,19 @@ class RegisterPage(LoginPage):
         """Input Side of Register Page"""
         self.left_side_layout = QVBoxLayout()
         title = QLabel("Register")
-        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
         title.setAlignment(Qt.AlignCenter)
 
         # Registration form layout
         register_form = QFormLayout()  # Form layout
         label_username = QLabel("User Name")  # Username label
-        label_username.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_username_input = QLineEdit()  # Input
-        self.reg_username_input.setStyleSheet(styling.INPUT_STYLE)
 
         label_password = QLabel("Password")  # Password label
-        label_password.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_password_input = QLineEdit()  # Input for password
-        self.reg_password_input.setStyleSheet(styling.INPUT_STYLE)
         self.reg_password_input.setEchoMode(QLineEdit.Password)  # Hide 
 
         label_key = QLabel("Key")  # Key label
-        label_key.setStyleSheet(styling.LABEL_SUBTITLE_STYLE)  # Label
         self.reg_key_input = QLineEdit()  # Input for key
-        self.reg_key_input.setStyleSheet(styling.INPUT_STYLE)
         self.reg_key_input.setEchoMode(QLineEdit.Password)  # Hide
 
         register_form.addRow(label_username, self.reg_username_input)  # Add username row to form
@@ -138,16 +122,13 @@ class RegisterPage(LoginPage):
 
         # Register and Back buttons
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
         register_button.clicked.connect(self.handle_register)  # Call handle_register method
 
         back_button = QPushButton("Back")  # Back button 
-        back_button.setStyleSheet(styling.TERTIARY_BUTTON_STYLE)
         back_button.clicked.connect(self.show_login_page)  # Call show_login_page method
 
         # Warning label for registration errors
         self.register_warning = QLabel("")  # Label for warning
-        self.register_warning.setStyleSheet("color: red; font-size: 14px;")  # Red
         self.register_warning.setAlignment(Qt.AlignCenter)  # Center
 
         # Assemble left side layout
@@ -181,7 +162,6 @@ class RegisterPage(LoginPage):
             self.register_warning.setText("Username already exists")  # Show error message
         else:
             self.dcm.write_user(username, password, [" ".join(map(str, i)) for i in self.dcm.default_data.values()])  # Add user to file
-            self.register_warning.setStyleSheet("color: green;")
             self.register_warning.setText("Registration successful! Please log in.")
             self.reg_username_input.clear()
             self.reg_password_input.clear()

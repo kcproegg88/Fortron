@@ -22,7 +22,6 @@ class MainPage(QWidget):
 
         title = QLabel("DCM Main Interface")
         title.setAlignment(Qt.AlignCenter)
-        title.setStyleSheet(styling.LABEL_TITLE_STYLE)
 
         top_bar.addWidget(title)
 
@@ -31,7 +30,6 @@ class MainPage(QWidget):
         data_bar = QHBoxLayout()
 
         self.mode_tabs = QTabWidget()
-        self.mode_tabs.setStyleSheet(styling.TABWIDGET_STYLE)
         for mode in self.dcm.pacemaker_modes:
             self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
 
@@ -52,12 +50,7 @@ class MainPage(QWidget):
         save_all_button = QPushButton("Save All Modes")
         reset_all_button = QPushButton("Reset All Modes")
         change_ui = QPushButton("Change UI")
-        
-        save_all_button.setStyleSheet(styling.BUTTON_STYLE)
-        reset_all_button.setStyleSheet(styling.SECONDARY_BUTTON_STYLE)
-        change_ui.setStyleSheet(styling.TERTIARY_BUTTON_STYLE)
-
-
+        change_ui.clicked.connect(self.dcm.change_theme)
         for button in [save_all_button, reset_all_button, change_ui]:
             setting_bar.addWidget(button)
         self.layout.addLayout(setting_bar)
@@ -69,9 +62,7 @@ class MainPage(QWidget):
         # Communication status
         comm_status_box = QVBoxLayout()
         comm_status_label = QLabel("Communication Status:")
-        comm_status_label.setStyleSheet("font-weight: bold;")
         self.comm_status = QLabel("Not Connected")
-        self.comm_status.setStyleSheet("color: red;")
         comm_status_box.addWidget(comm_status_label)
         comm_status_box.addWidget(self.comm_status)
         bottom_bar.addLayout(comm_status_box)
@@ -79,16 +70,13 @@ class MainPage(QWidget):
         # Device identification status
         device_status_box = QVBoxLayout()
         device_status_label = QLabel("Device Status:")
-        device_status_label.setStyleSheet("font-weight: bold;")
         self.device_status = QLabel("No Device Detected")
-        self.device_status.setStyleSheet("color: red;")
         device_status_box.addWidget(device_status_label)
         device_status_box.addWidget(self.device_status)
         bottom_bar.addLayout(device_status_box)
 
         # Sign Out Button
         sign_out_button = QPushButton("Sign Out")
-        sign_out_button.setStyleSheet(styling.BUTTON_STYLE)
         sign_out_button.clicked.connect(self.sign_out)
         bottom_bar.addWidget(sign_out_button)
         self.layout.addLayout(bottom_bar)
