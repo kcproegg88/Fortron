@@ -33,9 +33,10 @@ class MainPage(QWidget):
             self.mode_tabs.addTab(self.dcm.pacemaker_modes[mode], mode)
 
         data_bar.addWidget(self.mode_tabs, 1)
-        logo_label = QLabel()
-        logo_label.setPixmap(QPixmap("grid.png"))
-        data_bar.addWidget(logo_label, 1)
+        # logo_label = QLabel()
+        # logo_label.setPixmap(QPixmap("grid.png"))
+        # data_bar.addWidget(logo_label, 1)
+        data_bar.addWidget(self.dcm.graph, 1)
 
         # Assemble layout
         self.layout.addLayout(top_bar)
@@ -46,7 +47,9 @@ class MainPage(QWidget):
     def setup_setting_bar(self):
         setting_bar = QHBoxLayout()
         save_all_button = QPushButton("Save All Modes")
+        save_all_button.clicked.connect(self.dcm.save_all)
         reset_all_button = QPushButton("Reset All Modes")
+        reset_all_button.clicked.connect(self.dcm.reset_all)
         change_ui = QPushButton("Change UI")
 
         for button in [save_all_button, reset_all_button, change_ui]:
@@ -61,8 +64,8 @@ class MainPage(QWidget):
         comm_status_box = QVBoxLayout()
         comm_status_label = QLabel("Communication Status:")
         comm_status_label.setStyleSheet("font-weight: bold;")
-        self.comm_status = QLabel("Not Connected")
-        self.comm_status.setStyleSheet("color: red;")
+        self.comm_status = QLabel("No Data Transfer")
+        self.comm_status.setStyleSheet("color: grey;")
         comm_status_box.addWidget(comm_status_label)
         comm_status_box.addWidget(self.comm_status)
         bottom_bar.addLayout(comm_status_box)
@@ -86,5 +89,7 @@ class MainPage(QWidget):
 
     def sign_out(self):
         """Log out current user and return to the login page."""
+        self.dcm.graph.reset_live_plot()
+        self.mode_tabs.setCurrentIndex(0)
         self.dcm.page = 0
         self.dcm.run_gui()

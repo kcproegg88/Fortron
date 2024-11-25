@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QLabel, QWidget, QPushButton, QSlider
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+from serial_coms import serial_comm
+
 
 class PaceMakerParameter(QWidget):
     def __init__(self, param_list, value):
@@ -60,30 +62,39 @@ class PaceMakerMode(QWidget):
 
         # Save, Load, and Send buttons with improved styles
         parameter_buttons_layout = QHBoxLayout()
-        self.save_button = QPushButton("Save Mode")
-        self.save_button.clicked.connect(self.dcm.save_parameters)
-        self.save_button.setStyleSheet("background-color: #5cb85c; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
-        self.load_data_button = QPushButton("Load Egram Data")
-        self.load_data_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
-        self.send_data_button = QPushButton("Send to Pacemaker")
-        self.send_data_button.setStyleSheet("background-color: #d9534f; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        save_mode_button = QPushButton("Save Mode")
+        save_mode_button.clicked.connect(self.dcm.save_mode)
+        save_mode_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+
+        reset_parameters_button = QPushButton("Reset Parameters")
+        reset_parameters_button.clicked.connect(self.reset_parameters)
+        reset_parameters_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+
+        send_data_button = QPushButton("Send to Pacemaker")
+        send_data_button.clicked.connect(self.transmit_mode)
+        send_data_button.setStyleSheet("background-color: #d9534f; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         # Adding buttons to the layout
-        parameter_buttons_layout.addWidget(self.save_button)
-        parameter_buttons_layout.addWidget(self.load_data_button)
-        parameter_buttons_layout.addWidget(self.send_data_button)
+        parameter_buttons_layout.addWidget(save_mode_button)
+        parameter_buttons_layout.addWidget(reset_parameters_button)
+        parameter_buttons_layout.addWidget(send_data_button)
         self.layout.addStretch()
         self.layout.addLayout(parameter_buttons_layout)
-
-        # # Display logo
-        # logo_label = QLabel()
-        # logo_label.setPixmap(QPixmap("grid.png"))
-        # self.layout.addWidget(logo_label, 1, 3, len(self.parameters), 1)
 
     def update_parameters(self):
         """Update parameter sliders and labels with user data."""
         for i in range(len(self.parameters)):
             self.parameters[i].update_value_label(self.dcm.user_data[self.name][i])
+
+    def reset_parameters(self):
+        for i in range(len(self.parameters)):
+            self.parameters[i].update_value_label(self.dcm.default_data[self.name][i])
+
+    def transmit_mode(self):
+        print({i.name: i.value for i in self.parameters})
+        index = list(self.dcm.pacemaker_modes.keys()).index(self.name)
+        result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index+1)
+        print(result)
 
     def send_values(self):
         """Gather current parameter values for further processing"""

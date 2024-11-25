@@ -1,12 +1,12 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
 from PyQt5.QtGui import QPixmap
 import sys
 import os
 from login_registration import LoginPage, RegisterPage
 from mainpage import MainPage
 from parameter_display import PaceMakerMode
-# from serial_coms import serial_stuff
-# from PyQt5.QtCore import QTimer
+from serial_coms import check_connection, serial_comm
+from graph import LiveGraphWidget
 
 
 class DCM(QMainWindow):  # Main application window
@@ -18,6 +18,7 @@ class DCM(QMainWindow):  # Main application window
         self.logo = QPixmap(os.path.join(current_dir, "logo.png"))
         self.user_file = os.path.join(current_dir, "users.txt")
         self.logo = QPixmap("logo.png")
+        self.pacemaker_serial = "000621000000"
         self.users, self.data = {}, {}
         self.read_users()
 
@@ -28,14 +29,15 @@ class DCM(QMainWindow):  # Main application window
         self.max_users, self.key = 10, "1234"
         self.init_modes()
 
+        self.graph = LiveGraphWidget(self)
+
         self.page = 0
         self.pages_stacked_widget = QStackedWidget()
         self.login_page, self.register_page, self.main_page = LoginPage(self), RegisterPage(self), MainPage(self)
         [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
-        #serial_stuff(self)
-        #QTimer.singleShot(1, QApplication.quit)
+        print(check_connection(self.pacemaker_serial))
 
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
@@ -97,17 +99,38 @@ class DCM(QMainWindow):  # Main application window
             f.write(f"{username}:{password}:{','.join(data)}\n")
         self.read_users()  # Refresh user data
 
-    def save_parameters(self):
+    def save_all(self):
         """Save the current user's settings for all modes."""
         data = [" ".join(map(str, self.pacemaker_modes[i].send_values())) for i in self.pacemaker_modes]
+        self.write_user(self.user, self.users[self.user], list(map(str, data)))
+
+    def reset_all(self):
+        [self.pacemaker_modes[mode].reset_parameters() for mode in self.pacemaker_modes]
+
+    def save_mode(self):
+        current_index = self.main_page.mode_tabs.currentIndex()
+        current_mode = self.main_page.mode_tabs.tabText(current_index)
+        self.user_data[current_mode] = self.pacemaker_modes[current_mode].send_values()
+        data = [" ".join(map(str, self.user_data[i])) for i in self.user_data]
         self.write_user(self.user, self.users[self.user], list(map(str, data)))
 
     def update_modes(self):
         for mode in self.pacemaker_modes:
             self.pacemaker_modes[mode].update_parameters()
 
+    def check_port_connection(self):
+        port = check_connection(self.pacemaker_serial)
+        if port:
+            self.main_page.device_status.setText("Device Connected")
+            self.main_page.device_status.setStyleSheet("color: green;")
+        else:
+            self.main_page.device_status.setText("No Device Detected")
+            self.main_page.device_status.setStyleSheet("color: red;")
+        return port
+
     def run_gui(self):
         """Initialize and set the current page layout."""
+        self.check_port_connection()
         self.pages_stacked_widget.setCurrentIndex(self.page)
 
 

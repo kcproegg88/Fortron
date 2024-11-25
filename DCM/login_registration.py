@@ -28,14 +28,12 @@ class LoginPage(QWidget):
         label_username = QLabel("User Name")  # Username label
         label_username.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label 
         self.username_input = QLineEdit()
-        self.username_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
+        self.username_input.setStyleSheet("padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
 
         label_password = QLabel("Password")  # Password label
         label_password.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
         self.password_input = QLineEdit()
-        self.password_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
+        self.password_input.setStyleSheet("padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;") # Input
         self.password_input.setEchoMode(QLineEdit.Password)  # Hide password
 
         login_layout.addRow(label_username, self.username_input)  # Add username row
@@ -43,13 +41,11 @@ class LoginPage(QWidget):
 
         # Login and Register buttons
         login_button = QPushButton("Login")  # Login button
-        login_button.setStyleSheet(
-            "background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        login_button.setStyleSheet("background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         login_button.clicked.connect(self.handle_login)  # Call handle_login method
 
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(
-            "background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet("background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         register_button.clicked.connect(self.show_register_page)  # Call show_register_page method
 
         # Warning label for login errors
@@ -89,12 +85,11 @@ class LoginPage(QWidget):
         self.password_input.clear()
 
         if username in self.dcm.users and self.dcm.users[username] == password:
+            self.login_warning.setText("")
             self.dcm.page = 2
             self.dcm.user = username
             for mode in range(len(self.dcm.pacemaker_modes)):
                 self.dcm.user_data[list(self.dcm.pacemaker_modes)[mode]] = self.dcm.data[username][mode]
-            print("updated user data")
-            print(self.dcm.user_data)
             self.dcm.update_modes()
             self.dcm.run_gui()
         else:
@@ -102,6 +97,7 @@ class LoginPage(QWidget):
 
     def show_register_page(self):
         """Sets Page to Register Page"""
+        self.login_warning.setText("")
         self.dcm.page = 1
         self.dcm.run_gui()
 
@@ -121,21 +117,18 @@ class RegisterPage(LoginPage):
         label_username = QLabel("User Name")  # Username label
         label_username.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
         self.reg_username_input = QLineEdit()  # Input
-        self.reg_username_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_username_input.setStyleSheet("padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
 
         label_password = QLabel("Password")  # Password label
         label_password.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
         self.reg_password_input = QLineEdit()  # Input for password
-        self.reg_password_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_password_input.setStyleSheet("padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
         self.reg_password_input.setEchoMode(QLineEdit.Password)  # Hide 
 
         label_key = QLabel("Key")  # Key label
         label_key.setStyleSheet("font-size: 18px; color: #2D3E50;")  # Label
         self.reg_key_input = QLineEdit()  # Input for key
-        self.reg_key_input.setStyleSheet(
-            "padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
+        self.reg_key_input.setStyleSheet("padding: 10px; font-size: 16px; border: 2px solid #2D3E50; border-radius: 5px;")
         self.reg_key_input.setEchoMode(QLineEdit.Password)  # Hide
 
         register_form.addRow(label_username, self.reg_username_input)  # Add username row to form
@@ -144,13 +137,11 @@ class RegisterPage(LoginPage):
 
         # Register and Back buttons
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet(
-            "background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet("background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         register_button.clicked.connect(self.handle_register)  # Call handle_register method
 
         back_button = QPushButton("Back")  # Back button 
-        back_button.setStyleSheet(
-            "background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        back_button.setStyleSheet("background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         back_button.clicked.connect(self.show_login_page)  # Call show_login_page method
 
         # Warning label for registration errors
@@ -197,6 +188,10 @@ class RegisterPage(LoginPage):
 
     def show_login_page(self):
         """Changes Page to Login Page"""
+        self.reg_username_input.clear()
+        self.reg_password_input.clear()
+        self.reg_key_input.clear()
+        self.register_warning.setText("")
         self.dcm.page = 0
         self.dcm.run_gui()
         
