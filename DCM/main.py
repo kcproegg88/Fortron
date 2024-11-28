@@ -62,7 +62,7 @@ class DCM(QMainWindow):  # Main application window
                                 ["Upper Rate Limit", 50, 175, 1],
                                 ["Atrial Amplitude", 0, 50, 10],
                                 ["Atrial Pulse Width", 1, 30, 1],
-                                ["Atrial Sensitivity", 0, 50, 10],
+                                ["Atrial Sensitivity", 0, 60, 10],
                                 ["ARP", 15, 50, 0.1],
                                 ["PVARP", 15, 50, 0.1],
                                 ["Hysteresis", 29, 175, 1],
@@ -71,7 +71,7 @@ class DCM(QMainWindow):  # Main application window
                                 ["Upper Rate Limit", 50, 175, 1],
                                 ["Ventricular Amplitude", 0, 50, 10],
                                 ["Ventricular Pulse Width", 1, 30, 1],
-                                ["Ventricular Sensitivity", 0, 50, 10],
+                                ["Ventricular Sensitivity", 0, 60, 10],
                                 ["VRP", 15, 50, 0.1],
                                 ["Hysteresis", 29, 175, 1],
                                 ["Rate Smoothing", 0, 25, 1]],
@@ -98,7 +98,7 @@ class DCM(QMainWindow):  # Main application window
                                  ["Maximum Sensor Rate", 50, 175, 1],
                                  ["Atrial Amplitude", 0, 50, 10],  # value is multiplied by 10
                                  ["Atrial Pulse Width", 1, 30, 1],
-                                 ["Atrial Sensitivity", 0, 50, 10],  # value is multiplied by 10
+                                 ["Atrial Sensitivity", 0, 60, 10],  # value is multiplied by 10
                                  ["ARP", 15, 50, 0.1],
                                  ["PVARP", 15, 50, 0.1],
                                  ["Hysteresis", 29, 175, 1],  # 29 represents OFF
@@ -112,7 +112,7 @@ class DCM(QMainWindow):  # Main application window
                                  ["Maximum Sensor Rate", 50, 175, 1],
                                  ["Ventricular Amplitude", 0, 50, 10],
                                  ["Ventricular Pulse Width", 1, 30, 1],
-                                 ["Ventricular Sensitivity", 0, 50, 10],
+                                 ["Ventricular Sensitivity", 0, 60, 10],
                                  ["VRP", 15, 50, 0.1],
                                  ["Hysteresis", 29, 175, 1],
                                  ["Rate Smoothing", 0, 25, 1],
