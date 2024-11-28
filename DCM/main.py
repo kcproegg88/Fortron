@@ -37,49 +37,89 @@ class DCM(QMainWindow):  # Main application window
         [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
-        print(check_connection(self.pacemaker_serial))
 
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
         self.pacemaker_modes, self.user = {}, ""
-        self.default_data = {"AOO": [60, 120, 5, 40], "VOO": [60, 120, 5, 40],
-                             "AAI": [60, 120, 5, 40, 75, 250, 250, 60, 0], "VVI": [60, 120, 5, 40, 250, 320, 60, 0],
-                             "AOOR": [60, 120, 120, 5, 40, 30, 8, 5], "VOOR": [60, 120, 120, 5, 40, 30, 8, 5],
-                             "AAIR": [60, 120, 120, 5, 40, 75, 250, 250, 60, 0, 30, 8, 5],
-                             "VVIR": [60, 120, 120, 5, 40, 250, 320, 60, 0, 30, 8, 5]}
+        self.default_data = {"AOO": [60, 120, 50, 1], "VOO": [60, 120, 50, 1],
+                             "AAI": [60, 120, 50, 1, 25, 25, 25, 29, 0],
+                             "VVI": [60, 120, 50, 1, 25, 32, 29, 0],
+                             "AOOR": [60, 120, 120, 50, 1, 3, 3, 8, 5],
+                             "VOOR": [60, 120, 120, 50, 1, 3, 3, 8, 5],
+                             "AAIR": [60, 120, 120, 50, 1, 25, 25, 25, 29, 0, 3, 3, 8, 5],
+                             "VVIR": [60, 120, 120, 50, 1, 25, 32, 29, 0, 3, 3, 8, 5]}
 
         self.user_data = {mode: values[:] for mode, values in self.default_data.items()}
-        modes_params = {
-            "AOO": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                    ["Atrial amplitude", 5, 32, 10], ["Atrial pulse width", 5, 190, 100]],
-            "VOO": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                    ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100]],
-            "AAI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                    ["Atrial amplitude", 5, 32, 10], ["Atrial pulse width", 5, 190, 100],
-                    ["Atrial sensitivity", 25, 1000, 100], ["ARP", 150, 500, 1], ["PVARP", 150, 500, 1],
-                    ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1]],
-            "VVI": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                    ["Ventricular amplitude", 5, 32, 10], ["Ventricular pulse width", 5, 190, 100],
-                    ["Ventricular sensitivity", 25, 1000, 100], ["VRP", 150, 500, 1],
-                    ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1]],
-            "AOOR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                     ["Maximum Sensor Rate", 50, 175, 1], ["Atrial amplitude", 5, 32, 10],
-                     ["Atrial pulse width", 5, 190, 100],
-                     ["Reaction Time", 10, 50, 1], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
-            "VOOR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                     ["Maximum Sensor Rate", 50, 175, 1], ["Ventricular amplitude", 5, 32, 10],
-                     ["Ventricular pulse width", 5, 190, 100],
-                     ["Reaction Time", 10, 50, 1], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
-            "AAIR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                     ["Maximum Sensor Rate", 50, 175, 1], ["Atrial amplitude", 5, 32, 10],
-                     ["Atrial pulse width", 5, 190, 100], ["Atrial Sensitivity", 25, 1000, 100], ["ARP", 150, 500, 10],
-                     ["PVARP", 150, 500, 10], ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1],
-                     ["Reaction Time", 10, 50, 10], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]],
-            "VVIR": [["Lower rate limit", 30, 175, 1], ["Upper rate limit", 50, 175, 1],
-                     ["Maximum Sensor Rate", 50, 175, 1], ["Ventricular amplitude", 5, 32, 10],
-                     ["Ventricular pulse width", 5, 190, 100], ["Ventricular Sensitivity", 25, 1000, 100], ["VRP", 150, 500, 10],
-                     ["Hysteresis", 30, 175, 1], ["Rate Smoothing", 0, 25, 1],
-                     ["Reaction Time", 10, 50, 10], ["Response Factor", 1, 16, 1], ["Recovery Time", 2, 16, 1]]}
+        modes_params = {"AOO": [["Lower rate limit", 30, 175, 1],
+                                ["Upper rate limit", 50, 175, 1],
+                                ["Atrial amplitude", 0, 50, 10],
+                                ["Atrial pulse width", 1, 30, 1]],
+                        "VOO": [["Lower rate limit", 30, 175, 1],
+                                ["Upper rate limit", 50, 175, 1],
+                                ["Ventricular amplitude", 0, 50, 10],
+                                ["Ventricular pulse width", 1, 30, 1]],
+                        "AAI": [["Lower rate limit", 30, 175, 1],
+                                ["Upper rate limit", 50, 175, 1],
+                                ["Atrial amplitude", 0, 50, 10],
+                                ["Atrial pulse width", 1, 30, 1],
+                                ["Atrial sensitivity", 0, 50, 10],
+                                ["ARP", 15, 50, 0.1],
+                                ["PVARP", 15, 50, 0.1],
+                                ["Hysteresis", 29, 175, 1],
+                                ["Rate Smoothing", 0, 25, 1]],
+                        "VVI": [["Lower rate limit", 30, 175, 1],
+                                ["Upper rate limit", 50, 175, 1],
+                                ["Ventricular amplitude", 0, 50, 10],
+                                ["Ventricular pulse width", 1, 30, 1],
+                                ["Ventricular sensitivity", 0, 50, 10],
+                                ["VRP", 15, 50, 0.1],
+                                ["Hysteresis", 29, 175, 1],
+                                ["Rate Smoothing", 0, 25, 1]],
+                        "AOOR": [["Lower rate limit", 30, 175, 1],
+                                 ["Upper rate limit", 50, 175, 1],
+                                 ["Maximum Sensor Rate", 50, 175, 1],
+                                 ["Atrial amplitude", 0, 50, 10],
+                                 ["Atrial pulse width", 1, 30, 1],
+                                 ["Activity Threshold", 0, 6, 1],
+                                 ["Reaction Time", 1, 5, 0.1],
+                                 ["Response Factor", 1, 16, 1],
+                                 ["Recovery Time", 2, 16, 1]],
+                        "VOOR": [["Lower rate limit", 30, 175, 1],
+                                 ["Upper rate limit", 50, 175, 1],
+                                 ["Maximum Sensor Rate", 50, 175, 1],
+                                 ["Ventricular amplitude", 0, 50, 10],
+                                 ["Ventricular pulse width", 1, 30, 1],
+                                 ["Activity Threshold", 0, 6, 1],
+                                 ["Reaction Time", 1, 5, 0.1],
+                                 ["Response Factor", 1, 16, 1],
+                                 ["Recovery Time", 2, 16, 1]],
+                        "AAIR": [["Lower rate limit", 30, 175, 1],
+                                 ["Upper rate limit", 50, 175, 1],
+                                 ["Maximum Sensor Rate", 50, 175, 1],
+                                 ["Atrial amplitude", 0, 50, 10],  # value is multiplied by 10
+                                 ["Atrial pulse width", 1, 30, 1],
+                                 ["Atrial Sensitivity", 0, 50, 10],  # value is multiplied by 10
+                                 ["ARP", 15, 50, 0.1],
+                                 ["PVARP", 15, 50, 0.1],
+                                 ["Hysteresis", 29, 175, 1],  # 29 represents OFF
+                                 ["Rate Smoothing", 0, 25, 1],  # 0 represents OFF
+                                 ["Activity Threshold", 0, 6, 1],  # 0-6
+                                 ["Reaction Time", 1, 5, 0.1],  # value is divided by 10
+                                 ["Response Factor", 1, 16, 1],
+                                 ["Recovery Time", 2, 16, 1]],
+                        "VVIR": [["Lower rate limit", 30, 175, 1],
+                                 ["Upper rate limit", 50, 175, 1],
+                                 ["Maximum Sensor Rate", 50, 175, 1],
+                                 ["Ventricular amplitude", 0, 50, 10],
+                                 ["Ventricular pulse width", 1, 30, 1],
+                                 ["Ventricular Sensitivity", 0, 50, 10],
+                                 ["VRP", 15, 50, 0.1],
+                                 ["Hysteresis", 29, 175, 1],
+                                 ["Rate Smoothing", 0, 25, 1],
+                                 ["Activity Threshold", 0, 6, 1],
+                                 ["Reaction Time", 1, 5, 0.1],
+                                 ["Response Factor", 1, 16, 1],
+                                 ["Recovery Time", 2, 16, 1]]}
 
         for mode, params in modes_params.items():
             self.pacemaker_modes[mode] = PaceMakerMode(mode, self, params)

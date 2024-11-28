@@ -90,6 +90,7 @@ class MainPage(QWidget):
     def sign_out(self):
         """Log out current user and return to the login page."""
         self.dcm.graph.reset_live_plot()
+        self.dcm.graph.tabs.setCurrentIndex(0)
         self.mode_tabs.setCurrentIndex(0)
         self.dcm.page = 0
         self.dcm.run_gui()

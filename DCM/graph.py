@@ -11,8 +11,8 @@ class LiveGraphWidget(QWidget):
         super().__init__()
         self.dcm = dcm
         self.length = length
-        self.y_min = 0.45
-        self.y_max = 0.55
+        self.y_min = 0.49
+        self.y_max = 0.51
         self.init_ui()
 
         # Initialize data buffers
@@ -20,7 +20,6 @@ class LiveGraphWidget(QWidget):
         self.ventricle_data = [0.5] * length
         self.time_data = [0] * length  # Buffer for elapsed time in seconds
 
-        self.start_time = time.time()  # Start time reference
         self.port_device = check_connection(self.dcm.pacemaker_serial)
 
         self.timer_interval = length  # Update interval in ms
@@ -31,9 +30,9 @@ class LiveGraphWidget(QWidget):
         self.tab_2 = QWidget()
         self.tab_3 = QWidget()
 
+        self.tabs.addTab(self.tab_3, "Both Lines")
         self.tabs.addTab(self.tab_1, "Atrial Line")
         self.tabs.addTab(self.tab_2, "Ventricular Line")
-        self.tabs.addTab(self.tab_3, "Both Lines")
 
         self.tab_1_layout = QVBoxLayout(self.tab_1)
         self.tab_2_layout = QVBoxLayout(self.tab_2)
@@ -153,14 +152,15 @@ class LiveGraphWidget(QWidget):
     def start_live_plot(self):
         self.port_device = check_connection(self.dcm.pacemaker_serial)
         if not self.port_device:
-            self.dcm.main_page.comm_status.setText("Connection Error")
-            self.dcm.main_page.comm_status.setStyleSheet("color: red;")
+            self.dcm.main_page.device_status.setText("Connection Error")
+            self.dcm.main_page.device_status.setStyleSheet("color: red;")
             print("Device not connected. Exiting...")
         else:
-            self.dcm.main_page.comm_status.setText("Device Connected")
-            self.dcm.main_page.comm_status.setStyleSheet("color: green;")
+            self.dcm.main_page.device_status.setText("Device Connected")
+            self.dcm.main_page.device_status.setStyleSheet("color: green;")
         self.reset_live_plot()
         self.timer = QTimer(self)
+        self.start_time = time.time()  # Start time reference
         self.timer.setInterval(self.timer_interval)
         self.timer.timeout.connect(self.update_plot)
         self.timer.start()
@@ -176,6 +176,8 @@ class LiveGraphWidget(QWidget):
     def reset_live_plot(self):
         self.pause_live_plot()
         # Clear data buffers
+        self.y_min = 0.49
+        self.y_max = 0.51
         self.time_data = [0] * self.length
         self.atrial_data = [0.5] * self.length
         self.ventricle_data = [0.5] * self.length
