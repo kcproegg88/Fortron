@@ -96,18 +96,15 @@ class PaceMakerMode(QWidget):
         parameter_buttons_layout = QHBoxLayout()
         save_mode_button = QPushButton("Save Mode")
         save_mode_button.clicked.connect(self.dcm.save_mode)
-        save_mode_button.setStyleSheet(
-            "background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        # save_mode_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         reset_parameters_button = QPushButton("Reset Parameters")
         reset_parameters_button.clicked.connect(self.reset_parameters)
-        reset_parameters_button.setStyleSheet(
-            "background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        # reset_parameters_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         send_data_button = QPushButton("Send to Pacemaker")
         send_data_button.clicked.connect(self.transmit_mode)
-        send_data_button.setStyleSheet(
-            "background-color: #d9534f; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        # send_data_button.setStyleSheet("background-color: #d9534f; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         # Adding buttons to the layout
         parameter_buttons_layout.addWidget(save_mode_button)

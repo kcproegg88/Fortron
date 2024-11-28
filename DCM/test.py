@@ -1,33 +1,45 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QScrollArea, QVBoxLayout, QWidget, QPushButton
-
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Theme Switcher")
 
-        self.scroll_area = QScrollArea(self)
-        self.scroll_area_widget = QWidget()
-        self.scroll_area_layout = QVBoxLayout(self.scroll_area_widget)
-        self.scroll_area.setWidget(self.scroll_area_widget)
-        self.scroll_area.setWidgetResizable(True)
+        # Main layout
+        layout = QVBoxLayout()
 
-        self.setCentralWidget(self.scroll_area)
+        # Buttons to change themes
+        light_button = QPushButton("Light Theme")
+        light_button.clicked.connect(lambda: self.change_theme("light.qss"))
 
-        # Add some widgets to the scroll area
-        for i in range(10):
-            btn = QPushButton(f"Button {i}")
-            self.scroll_area_layout.addWidget(btn)
+        dark_button = QPushButton("Dark Theme")
+        dark_button.clicked.connect(lambda: self.change_theme("dark.qss"))
 
-        # Add a clear button to clear the layout
-        clear_button = QPushButton("Clear Layout")
-        clear_button.clicked.connect(self.clear_layout)
-        self.scroll_area_layout.addWidget(clear_button)
+        blue_button = QPushButton("Blue Theme")
+        blue_button.clicked.connect(lambda: self.change_theme("blue.qss"))
 
-    def clear_layout(self):
-        clear_scroll_area_layout(self.scroll_area_layout)
+        # Add buttons to layout
+        layout.addWidget(light_button)
+        layout.addWidget(dark_button)
+        layout.addWidget(blue_button)
 
+        # Set central widget
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
 
-app = QApplication([])
-window = MainWindow()
-window.show()
-app.exec_()
+    def change_theme(self, theme_file):
+        """Load the selected QSS file and apply the stylesheet."""
+        try:
+            with open(theme_file, "r") as file:
+                qss = file.read()
+                self.setStyleSheet(qss)
+        except FileNotFoundError:
+            print(f"Theme file {theme_file} not found.")
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec_())

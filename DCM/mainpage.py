@@ -51,6 +51,7 @@ class MainPage(QWidget):
         reset_all_button = QPushButton("Reset All Modes")
         reset_all_button.clicked.connect(self.dcm.reset_all)
         change_ui = QPushButton("Change UI")
+        change_ui.clicked.connect(self.dcm.change_theme)
 
         for button in [save_all_button, reset_all_button, change_ui]:
             setting_bar.addWidget(button)
@@ -82,7 +83,7 @@ class MainPage(QWidget):
 
         # Sign Out Button
         sign_out_button = QPushButton("Sign Out")
-        sign_out_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
+        # sign_out_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
         sign_out_button.clicked.connect(self.sign_out)
         bottom_bar.addWidget(sign_out_button)
         self.layout.addLayout(bottom_bar)

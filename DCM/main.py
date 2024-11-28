@@ -7,6 +7,7 @@ from mainpage import MainPage
 from parameter_display import PaceMakerMode
 from serial_coms import check_connection, serial_comm
 from graph import LiveGraphWidget
+import styling
 
 
 class DCM(QMainWindow):  # Main application window
@@ -23,7 +24,9 @@ class DCM(QMainWindow):  # Main application window
         self.read_users()
 
         self.setWindowTitle("DCM")
-        self.setStyleSheet("background-color: rgb(205, 205, 255);")
+        self.style_manager = styling.StyleManager()
+        # self.setStyleSheet("background-color: rgb(205, 205, 255);")
+        self.apply_styles()
 
         # State variables for page navigation and user data
         self.max_users, self.key = 10, "1234"
@@ -37,6 +40,19 @@ class DCM(QMainWindow):  # Main application window
         [self.pages_stacked_widget.addWidget(page_widget) for page_widget in [self.login_page, self.register_page, self.main_page]]
         self.setCentralWidget(self.pages_stacked_widget)
         self.run_gui()
+
+    def apply_styles(self):
+        """Sets style manager"""
+        self.setStyleSheet(self.style_manager.stylesheet)
+
+    def change_theme(self):
+        """Changes themes in all pages"""
+        themes = list(self.style_manager.themes.keys())
+        current_index = themes.index(self.style_manager.current_theme)
+        next_index = (current_index + 1) % len(themes)
+        next_theme = themes[next_index]
+        self.style_manager.set_theme(next_theme)
+        self.apply_styles()
 
     def init_modes(self):
         """Creates and adds parameter widgets for each pacing mode."""
