@@ -35,10 +35,11 @@ class PaceMakerParameter(QWidget):
     def update_value_label(self, value):
         """Update the displayed value when the slider changes"""
         self.value = value
-        if self.name == "Lower rate limit" or self.name == "Hysteresis":
+        self.inputBox.setValue(self.value)
+        if self.name == "Lower Rate Limit" or self.name == "Hysteresis":
             if 30 <= self.value <= 50 or 90 <= self.value <= 175:
                 self.value -= self.value % 5
-        elif self.name == "Upper rate limit" or self.name == "Maximum Sensor Rate":
+        elif self.name == "Upper Rate Limit" or self.name == "Maximum Sensor Rate":
             self.value -= self.value % 5
         elif self.name == "Rate Smoothing":
             self.value -= self.value % 3
@@ -47,11 +48,11 @@ class PaceMakerParameter(QWidget):
 
         # self.inputBox.setValue(self.value)
         self.name_label.setText(f"{self.name}: {self.value / self.decimal}")
-        if self.name in ["Lower rate limit", "Upper rate limit", "Maximum Sensor Rate", "Hysteresis"]:
+        if self.name in ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Hysteresis"]:
             self.name_label.setText(f"{self.name}: {int(self.value / self.decimal)} ppm")
-        elif self.name in ["Atrial amplitude", "Ventricular amplitude"] :
+        elif self.name in ["Atrial Amplitude", "Ventricular Amplitude"] :
             self.name_label.setText(f"{self.name}: {self.value / self.decimal} V")
-        elif self.name in ["Atrial pulse width", "Ventricular pulse width", "ARP", "VRP", "PVARP"]:
+        elif self.name in ["Atrial Pulse Width", "Ventricular Pulse Width", "ARP", "VRP", "PVARP"]:
             self.name_label.setText(f"{self.name}: {int(self.value / self.decimal)} ms")
         elif self.name in ["Atrial Sensitivity", "Ventricular Sensitivity"]:
             self.name_label.setText(f"{self.name}: {self.value / self.decimal} mV")
