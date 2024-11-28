@@ -141,7 +141,7 @@ class PaceMakerMode(QWidget):
             return
 
         if self.name in ["AOOR", "VOOR", "AAIR", "VVIR"]:
-            if not (self.parameters[1].value > self.parameters[2].value > self.parameters[0].value):
+            if not (self.parameters[1].value >= self.parameters[2].value >= self.parameters[0].value):
                 self.dcm.main_page.comm_status.setText("Invalid Parameters")
                 self.dcm.main_page.comm_status.setStyleSheet("color: red;")
                 return

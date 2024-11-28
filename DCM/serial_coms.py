@@ -22,13 +22,15 @@ def serial_comm(port_name, sync_in: int, func_in: int, parameters=None, mode=16)
         all_parameters = {"mode": mode, "Lower Rate Limit": 40, "Upper Rate Limit": 180, "Maximum Sensor Rate": 120, "AVDELAY_IN": 150,
                           "Atrial Amplitude": 50, "Ventricular Amplitude": 50, "Atrial Pulse Width": 1,
                           "Ventricular Pulse Width": 1, "Atrial Sensitivity": 40, "Ventricular Sensitivity": 40,
-                          "ARP": 25, "VRP": 32, "PVARP": 32, "Activity Threshold": 3, "Reaction Time": 30,
+                          "ARP": 25, "VRP": 32, "PVARP": 32, "Activity Threshold": 3, "Reaction Time": 3,
                           "Response Factor": 8, "Recovery Time": 5, "SYNC_IN": sync_in, "FUNCTION_IN": func_in}
+
         if parameters:
             for parameter in parameters:
                 if not parameter in ["Hysteresis", "Rate Smoothing"]:
                     all_parameters[parameter] = parameters[parameter]
             # print(f"in the function: {all_parameters}")
+        all_parameters["Reaction Time"] = all_parameters["Reaction Time"]*10
         data = [i for i in all_parameters.values()]
         st = struct.Struct('<BBBBBBBBBBBBBBBBBBBB')
         byte_data = st.pack(*data)
