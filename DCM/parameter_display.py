@@ -69,7 +69,7 @@ class PaceMakerParameter(QWidget):
         elif self.name == "Rate Smoothing" and self.value == 0:
             self.name_label.setText(f"{self.name}: OFF")
         elif self.name == "Activity Threshold":
-            self.name_label.setText(f"{self.name}: {(["V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"])[self.value]}")
+            self.name_label.setText(f"{self.name}: {(['V-Low', 'Low', 'Med-Low', 'Med', 'Med-High', 'High', 'V-High'])[self.value]}")
 
 
 class PaceMakerMode(QWidget):

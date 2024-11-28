@@ -26,7 +26,7 @@ def serial_comm(port_name, sync_in: int, func_in: int, parameters=None, mode=16)
                           "Response Factor": 8, "Recovery Time": 5, "SYNC_IN": sync_in, "FUNCTION_IN": func_in}
         if parameters:
             for parameter in parameters:
-                if not parameter == "Hysteresis" or "Rate Smoothing":
+                if not parameter in ["Hysteresis", "Rate Smoothing"]:
                     all_parameters[parameter] = parameters[parameter]
             print(f"in the function: {all_parameters}")
         data = [i for i in all_parameters.values()]
