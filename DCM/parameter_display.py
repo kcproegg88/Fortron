@@ -69,7 +69,7 @@ class PaceMakerParameter(QWidget):
         elif self.name == "Rate Smoothing" and self.value == 0:
             self.name_label.setText(f"{self.name}: OFF")
         elif self.name == "Activity Threshold":
-            self.name_label.setText(f"{self.name}: {["V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"][self.value]}")
+            self.name_label.setText(f"{self.name}: {(["V-Low", "Low", "Med-Low", "Med", "Med-High", "High", "V-High"])[self.value]}")
 
 
 class PaceMakerMode(QWidget):
@@ -139,8 +139,12 @@ class PaceMakerMode(QWidget):
     def transmit_mode(self):
         print({i.name: i.value for i in self.parameters})
         index = list(self.dcm.pacemaker_modes.keys()).index(self.name)
-        serial_comm(self.dcm.check_port_connection(), 22, 85, {i.name: i.value for i in self.parameters}, index + 1)
-        result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index + 1)
+        result = 0
+        try:
+            serial_comm(self.dcm.check_port_connection(), 22, 85, {i.name: i.value for i in self.parameters}, index + 1)
+            result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index + 1)
+        except Exception as e:
+            print(e)
         print(result)
 
     def send_values(self):
