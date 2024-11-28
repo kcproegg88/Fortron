@@ -33,10 +33,15 @@ def serial_comm(port_name, sync_in: int, func_in: int, parameters=None, mode=16)
         byte_data = st.pack(*data)
         ser.write(byte_data)
         ser.flush()
-        if parameters:
-            streceive = struct.Struct('<BBBBBBBBBBBBBB')
-        else:
-            streceive = struct.Struct('<ffBBBBBBBBBB')
-        received_data = ser.read(streceive.size)
-        response = streceive.unpack(received_data)
-        return response
+        if not all_parameters["FUNCTION_IN"] == 85:
+            if parameters:
+                streceive = struct.Struct('<BBBBBBBBBBBBBB')
+            else:
+                streceive = struct.Struct('<ffBBBBBBBBBB')
+            received_data = ser.read(streceive.size)
+            try:
+                response = streceive.unpack(received_data)
+                return response
+            except Exception as e:
+                print(f"serial comms error: {e}")
+                print(received_data)

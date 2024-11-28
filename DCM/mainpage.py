@@ -18,7 +18,7 @@ class MainPage(QWidget):
 
         top_bar = QHBoxLayout()
 
-        title = QLabel("DCM Main Interface")
+        title = QLabel("Pacemaker Control Monitor")
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
 

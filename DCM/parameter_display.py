@@ -139,7 +139,8 @@ class PaceMakerMode(QWidget):
     def transmit_mode(self):
         print({i.name: i.value for i in self.parameters})
         index = list(self.dcm.pacemaker_modes.keys()).index(self.name)
-        result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index+ 1)
+        serial_comm(self.dcm.check_port_connection(), 22, 85, {i.name: i.value for i in self.parameters}, index + 1)
+        result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index + 1)
         print(result)
 
     def send_values(self):

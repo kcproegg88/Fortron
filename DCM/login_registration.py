@@ -101,6 +101,7 @@ class LoginPage(QWidget):
         self.dcm.page = 1
         self.dcm.run_gui()
 
+
 class RegisterPage(LoginPage):
     def __init__(self, dcm):
         super().__init__(dcm)
