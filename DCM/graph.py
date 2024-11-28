@@ -144,19 +144,19 @@ class LiveGraphWidget(QWidget):
             self.dcm.main_page.comm_status.setStyleSheet("color: green;")
 
         except Exception as e:
-            self.dcm.main_page.device_status.setText("Connection Error")
-            self.dcm.main_page.device_status.setStyleSheet("color: red;")
+            self.dcm.main_page.comm_status.setText("ECG Interrupted")
+            self.dcm.main_page.comm_status.setStyleSheet("color: red;")
             self.reset_live_plot()
             print(f"Error during plotting: {e}")
 
     def start_live_plot(self):
         self.port_device = check_connection(self.dcm.pacemaker_serial)
         if not self.port_device:
-            self.dcm.main_page.device_status.setText("Connection Error")
+            self.dcm.main_page.device_status.setText("No Device Detected")
             self.dcm.main_page.device_status.setStyleSheet("color: red;")
             print("Device not connected. Exiting...")
         else:
-            self.dcm.main_page.device_status.setText("Device Connected")
+            self.dcm.main_page.device_status.setText(f"Connected: {self.port_device}")
             self.dcm.main_page.device_status.setStyleSheet("color: green;")
         self.reset_live_plot()
         self.timer = QTimer(self)

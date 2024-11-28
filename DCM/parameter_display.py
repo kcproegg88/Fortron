@@ -94,12 +94,12 @@ class PaceMakerMode(QWidget):
         self.add_parameters()
         # Save, Load, and Send buttons with improved styles
         parameter_buttons_layout = QHBoxLayout()
-        save_mode_button = QPushButton("Save Mode")
-        save_mode_button.clicked.connect(self.dcm.save_mode)
+        save_mode_button = QPushButton("Save")
+        save_mode_button.clicked.connect(self.dcm.save_all)
         # save_mode_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
-        reset_parameters_button = QPushButton("Reset Parameters")
-        reset_parameters_button.clicked.connect(self.reset_parameters)
+        reset_parameters_button = QPushButton("Reset to Nominal")
+        reset_parameters_button.clicked.connect(self.dcm.reset_all)
         # reset_parameters_button.setStyleSheet("background-color: #0275d8; color: white; padding: 5px; font-size: 14px; border-radius: 5px;")
 
         send_data_button = QPushButton("Send to Pacemaker")
@@ -135,15 +135,16 @@ class PaceMakerMode(QWidget):
             self.parameters[i].update_value_label(self.dcm.default_data[self.name][i])
 
     def transmit_mode(self):
-        print({i.name: i.value for i in self.parameters})
         index = list(self.dcm.pacemaker_modes.keys()).index(self.name)
-        result = 0
         try:
             serial_comm(self.dcm.check_port_connection(), 22, 85, {i.name: i.value for i in self.parameters}, index + 1)
-            result = serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index + 1)
+            serial_comm(self.dcm.check_port_connection(), 22, 34, {i.name: i.value for i in self.parameters}, index + 1)
+            self.dcm.main_page.comm_status.setText("Mode Updated")
+            self.dcm.main_page.comm_status.setStyleSheet("color: green;")
         except Exception as e:
-            print(e)
-        print(result)
+            print(f"Transmit Error: {e}")
+            self.dcm.main_page.comm_status.setText("Mode Change Failed")
+            self.dcm.main_page.comm_status.setStyleSheet("color: red;")
 
     def send_values(self):
         """Gather current parameter values for further processing"""

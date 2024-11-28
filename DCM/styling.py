@@ -1,11 +1,11 @@
 # Define themes as dictionaries
 THEMES = {
     'light': {
-        'PRIMARY_COLOR': "#007ACC",
+        'PRIMARY_COLOR': "#1B065E",
         'PRIMARY_DARK': "#005F99",
         'SECONDARY_COLOR': "#5cb85c",
         'TERTIARY_COLOR': "#d9534f",
-        'BACKGROUND_COLOR': "#f0f0f0",
+        'BACKGROUND_COLOR': "#cdcdff",
         'TEXT_COLOR': "#333333",
         'ACCENT_COLOR': "#FF5722",
         'TITLE_COLOR': "#005F99",
@@ -36,19 +36,6 @@ THEMES = {
         'SUCCESS_COLOR': "#2E7D32",
         'ERROR_COLOR': "#C62828",
     },
-    'dark': {
-        'PRIMARY_COLOR': "#BB86FC",
-        'PRIMARY_DARK': "#3700B3",
-        'SECONDARY_COLOR': "#03DAC6",
-        'TERTIARY_COLOR': "#CF6679",
-        'BACKGROUND_COLOR': "#121212",
-        'TEXT_COLOR': "#FFFFFF",
-        'ACCENT_COLOR': "#03DAC6",
-        'TITLE_COLOR': "#3700B3",
-        'SUCCESS_COLOR': "#4CAF50",
-        'ERROR_COLOR': "#F44336",
-    },
-
 }
 
 # Fonts

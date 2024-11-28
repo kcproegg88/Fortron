@@ -28,7 +28,7 @@ def serial_comm(port_name, sync_in: int, func_in: int, parameters=None, mode=16)
             for parameter in parameters:
                 if not parameter in ["Hysteresis", "Rate Smoothing"]:
                     all_parameters[parameter] = parameters[parameter]
-            print(f"in the function: {all_parameters}")
+            # print(f"in the function: {all_parameters}")
         data = [i for i in all_parameters.values()]
         st = struct.Struct('<BBBBBBBBBBBBBBBBBBBB')
         byte_data = st.pack(*data)
@@ -42,7 +42,9 @@ def serial_comm(port_name, sync_in: int, func_in: int, parameters=None, mode=16)
             received_data = ser.read(streceive.size)
             try:
                 response = streceive.unpack(received_data)
+                if all_parameters["FUNCTION_IN"] == 34:
+                    print(data)
+                    print(response)
                 return response
             except Exception as e:
                 print(f"serial comms error: {e}")
-                print(received_data)

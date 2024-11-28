@@ -41,17 +41,20 @@ class LoginPage(QWidget):
 
         # Login and Register buttons
         login_button = QPushButton("Login")  # Login button
-        login_button.setStyleSheet("background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        login_button.setStyleSheet("color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         login_button.clicked.connect(self.handle_login)  # Call handle_login method
 
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet("background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet("color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         register_button.clicked.connect(self.show_register_page)  # Call show_register_page method
 
         # Warning label for login errors
         self.login_warning = QLabel("")  # Label
         self.login_warning.setStyleSheet("color: red; font-size: 14px;")  # Red
         self.login_warning.setAlignment(Qt.AlignCenter)  # Center
+
+        change_ui = QPushButton("Change UI")
+        change_ui.clicked.connect(self.dcm.change_theme)
 
         # Assemble left side layout
         self.left_side_layout.addStretch()  # Top
@@ -61,6 +64,7 @@ class LoginPage(QWidget):
         self.left_side_layout.addWidget(login_button)  # Add login button
         self.left_side_layout.addWidget(register_button)  # Add register button
         self.left_side_layout.addStretch()  # Bottom
+        self.left_side_layout.addWidget(change_ui)
 
     def right_side(self):
         """Creates the Image side of the Login Page"""
@@ -138,11 +142,11 @@ class RegisterPage(LoginPage):
 
         # Register and Back buttons
         register_button = QPushButton("Register")  # Register button
-        register_button.setStyleSheet("background-color: #3CB371; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        register_button.setStyleSheet("color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         register_button.clicked.connect(self.handle_register)  # Call handle_register method
 
         back_button = QPushButton("Back")  # Back button 
-        back_button.setStyleSheet("background-color: #4682B4; color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
+        back_button.setStyleSheet("color: white; font-size: 18px; font-weight: bold; padding: 10px; border: none; border-radius: 5px;")
         back_button.clicked.connect(self.show_login_page)  # Call show_login_page method
 
         # Warning label for registration errors
