@@ -135,6 +135,17 @@ class PaceMakerMode(QWidget):
             self.parameters[i].update_value_label(self.dcm.default_data[self.name][i])
 
     def transmit_mode(self):
+        if self.parameters[0].value > self.parameters[1].value:
+            self.dcm.main_page.comm_status.setText("Invalid Parameters")
+            self.dcm.main_page.comm_status.setStyleSheet("color: red;")
+            return
+
+        if self.name in ["AOOR", "VOOR", "AAIR", "VVIR"]:
+            if not (self.parameters[1].value > self.parameters[2].value > self.parameters[0].value):
+                self.dcm.main_page.comm_status.setText("Invalid Parameters")
+                self.dcm.main_page.comm_status.setStyleSheet("color: red;")
+                return
+
         index = list(self.dcm.pacemaker_modes.keys()).index(self.name)
         try:
             serial_comm(self.dcm.check_port_connection(), 22, 85, {i.name: i.value for i in self.parameters}, index + 1)

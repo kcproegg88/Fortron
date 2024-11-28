@@ -7,22 +7,23 @@ from serial_coms import check_connection, serial_comm
 
 
 class LiveGraphWidget(QWidget):
-    def __init__(self, dcm, length=50):
+    def __init__(self, dcm, length=10, frequency=100):
         super().__init__()
         self.dcm = dcm
         self.length = length
+        self.frequency = frequency
         self.y_min = 0.49
         self.y_max = 0.51
         self.init_ui()
 
         # Initialize data buffers
-        self.atrial_data = [0.5] * length
-        self.ventricle_data = [0.5] * length
-        self.time_data = [0] * length  # Buffer for elapsed time in seconds
+        self.atrial_data = [0.5] * length * frequency
+        self.ventricle_data = [0.5] * length * frequency
+        self.time_data = [0] * length * frequency  # Buffer for elapsed time in seconds
 
         self.port_device = check_connection(self.dcm.pacemaker_serial)
 
-        self.timer_interval = length  # Update interval in ms
+        self.timer_interval = int(1000/self.frequency)  # Update interval in ms
 
     def init_ui(self):
         self.tabs = QTabWidget()
@@ -57,21 +58,21 @@ class LiveGraphWidget(QWidget):
         self.ventrical_line_3, = self.ax_3.plot([], [], label="Ventricular", color="red")
 
         # Configure plot
-        self.ax_1.set_xlim(0, int(self.length/10))  # Initially show the first 5 seconds
+        self.ax_1.set_xlim(0, int(self.length))  # Initially show the first 5 seconds
         self.ax_1.set_ylim(self.y_min, self.y_max)
         self.ax_1.legend()
         self.ax_1.set_title("Live Atrial Data Over Time")
         self.ax_1.set_xlabel("Time (s)")
         self.ax_1.set_ylabel("Signal")
 
-        self.ax_2.set_xlim(0, int(self.length / 10))  # Initially show the first 5 seconds
+        self.ax_2.set_xlim(0, int(self.length))  # Initially show the first 5 seconds
         self.ax_2.set_ylim(self.y_min, self.y_max)
         self.ax_2.legend()
         self.ax_2.set_title("Live Ventricular Data Over Time")
         self.ax_2.set_xlabel("Time (s)")
         self.ax_2.set_ylabel("Signal")
 
-        self.ax_3.set_xlim(0, int(self.length / 10))  # Initially show the first 5 seconds
+        self.ax_3.set_xlim(0, int(self.length))  # Initially show the first 5 seconds
         self.ax_3.set_ylim(self.y_min, self.y_max)
         self.ax_3.legend()
         self.ax_3.set_title("Live Atrial and Ventricular Data Over Time")
@@ -129,11 +130,11 @@ class LiveGraphWidget(QWidget):
             self.ax_2.set_ylim(self.y_min - 0.01, self.y_max + 0.01)
             self.ax_3.set_ylim(self.y_min - 0.01, self.y_max + 0.01)
 
-            # Adjust X-axis to show only the latest values (last length/10 seconds)
-            if self.time_data[-1] > int(self.length/10):  # Adjust to last length/10 seconds dynamically
-                self.ax_1.set_xlim(self.time_data[-1] - int(self.length/10), self.time_data[-1])
-                self.ax_2.set_xlim(self.time_data[-1] - int(self.length/10), self.time_data[-1])
-                self.ax_3.set_xlim(self.time_data[-1] - int(self.length/10), self.time_data[-1])
+            # Adjust X-axis to show only the latest values (last length/self.frequency seconds)
+            if self.time_data[-1] > int(self.length):  # Adjust to last length/self.frequency seconds dynamically
+                self.ax_1.set_xlim(self.time_data[-1] - int(self.length), self.time_data[-1])
+                self.ax_2.set_xlim(self.time_data[-1] - int(self.length), self.time_data[-1])
+                self.ax_3.set_xlim(self.time_data[-1] - int(self.length), self.time_data[-1])
 
             # Redraw the canvas
             self.canvas_1.draw()
@@ -147,6 +148,11 @@ class LiveGraphWidget(QWidget):
             self.dcm.main_page.comm_status.setText("ECG Interrupted")
             self.dcm.main_page.comm_status.setStyleSheet("color: red;")
             self.reset_live_plot()
+            self.port_device = check_connection(self.dcm.pacemaker_serial)
+            if not self.port_device:
+                self.dcm.main_page.device_status.setText("No Device Detected")
+                self.dcm.main_page.device_status.setStyleSheet("color: red;")
+                print("Device not connected. Exiting...")
             print(f"Error during plotting: {e}")
 
     def start_live_plot(self):
@@ -178,16 +184,16 @@ class LiveGraphWidget(QWidget):
         # Clear data buffers
         self.y_min = 0.49
         self.y_max = 0.51
-        self.time_data = [0] * self.length
-        self.atrial_data = [0.5] * self.length
-        self.ventricle_data = [0.5] * self.length
+        self.time_data = [0] * self.length * self.frequency
+        self.atrial_data = [0.5] * self.length * self.frequency
+        self.ventricle_data = [0.5] * self.length * self.frequency
 
         # Reset plot limits
-        self.ax_1.set_xlim(0, int(self.length / 10))
+        self.ax_1.set_xlim(0, int(self.length))
         self.ax_1.set_ylim(self.y_min, self.y_max)
-        self.ax_2.set_xlim(0, int(self.length / 10))
+        self.ax_2.set_xlim(0, int(self.length))
         self.ax_2.set_ylim(self.y_min, self.y_max)
-        self.ax_3.set_xlim(0, int(self.length / 10))
+        self.ax_3.set_xlim(0, int(self.length))
         self.ax_3.set_ylim(self.y_min, self.y_max)
 
         # Clear existing plot lines
