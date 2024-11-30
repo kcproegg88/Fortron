@@ -1,5 +1,4 @@
-<p style="font-size:2em; font-weight:bold; text-align:center;">- Fortron -</p>
-
+# - Fortron -
 
 ### About The Project
 Pacemakers are vital devices for people with abnormal heart conditions, allowing them to experience a natural pulse through electrical stimulation. This project focuses on developing a model of a pacemaker, simulating its functionality across different pacing modes to treat different cardiac conditions. 
