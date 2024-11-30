@@ -77,7 +77,7 @@ into the following:
 
 ## Contributors
 [Jack Coleman](https://www.linkedin.com/in/jack-coleman-75418330b/) |
-[Alisa Norenburg](https://www.linkedin.com/in/alisa-norenberg/) |
+[Alisa Norenberg](https://www.linkedin.com/in/alisa-norenberg/) |
 [Fares Alterawi](https://www.linkedin.com/in/faris-alterawi/) |
 [Haaniya Ahmed](https://www.linkedin.com/in/haaniya-ahmed-917927217/) |
 [Hamza Alfalo](https://www.linkedin.com/in/hamza-alfalo-452a6b245/) |
