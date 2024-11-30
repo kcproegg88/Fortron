@@ -1,4 +1,4 @@
-<p style="font-size:2em; text-shadow: 10px 10px 10px blue; font-weight:bold; text-align:center;">- Fortron -</p>
+<p style="font-size:2em; font-weight:bold; text-align:center;">- Fortron -</p>
 
 
 ### About The Project
@@ -38,6 +38,12 @@ Through model-based code generation and a python gui, we created the following f
   <img src="images\pacemaker_board2.png" alt="Intro Screen Dark" />
   <br>
   <em>Pacemaker (Left) and the Heart (Right)</em>
+</p>
+
+<p align="center">
+  <img src="images\simulink.png" alt="Intro Screen Dark" />
+  <br>
+  <em>Simulink Code</em>
 </p>
 
 ## Installation
