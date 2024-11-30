@@ -1,11 +1,11 @@
 # Define themes as dictionaries
 THEMES = {
     'light': {
-        'PRIMARY_COLOR': "#007ACC",
+        'PRIMARY_COLOR': "#1B065E",
         'PRIMARY_DARK': "#005F99",
         'SECONDARY_COLOR': "#5cb85c",
         'TERTIARY_COLOR': "#d9534f",
-        'BACKGROUND_COLOR': "#f0f0f0",
+        'BACKGROUND_COLOR': "#cdcdff",
         'TEXT_COLOR': "#333333",
         'ACCENT_COLOR': "#FF5722",
         'TITLE_COLOR': "#005F99",
@@ -24,7 +24,7 @@ THEMES = {
         'SUCCESS_COLOR': "#388E3C",
         'ERROR_COLOR': "#B71C1C",
     },
-        'teal': {  
+        'teal': {
         'PRIMARY_COLOR': "#009688",
         'PRIMARY_DARK': "#00796B",
         'SECONDARY_COLOR': "#4DB6AC",
@@ -32,23 +32,10 @@ THEMES = {
         'BACKGROUND_COLOR': "#E0F2F1",
         'TEXT_COLOR': "#004D40",
         'ACCENT_COLOR': "#26A69A",
-        'TITLE_COLOR': "#004D40",  
-        'SUCCESS_COLOR': "#2E7D32",  
-        'ERROR_COLOR': "#C62828",  
+        'TITLE_COLOR': "#004D40",
+        'SUCCESS_COLOR': "#2E7D32",
+        'ERROR_COLOR': "#C62828",
     },
-    'dark': {
-        'PRIMARY_COLOR': "#BB86FC",
-        'PRIMARY_DARK': "#3700B3",
-        'SECONDARY_COLOR': "#03DAC6",
-        'TERTIARY_COLOR': "#CF6679",
-        'BACKGROUND_COLOR': "#121212",
-        'TEXT_COLOR': "#FFFFFF",
-        'ACCENT_COLOR': "#03DAC6",
-        'TITLE_COLOR': "#3700B3",
-        'SUCCESS_COLOR': "#4CAF50",
-        'ERROR_COLOR': "#F44336",
-    },
-
 }
 
 # Fonts
@@ -72,6 +59,9 @@ class StyleManager:
     def update_styles(self):
         theme = self.themes[self.current_theme]
         self.stylesheet = f"""
+        * {{
+            font-family: {FONT_FAMILY};
+        }}
         QMainWindow {{
             background-color: {theme['BACKGROUND_COLOR']};
         }}
